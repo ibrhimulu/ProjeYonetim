@@ -1,0 +1,11 @@
+﻿@{
+    var action = Context.Request.Path.Value.ToLower();
+    if (action.Contains("/account/login"))
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "_Layout";
+    }
+}
