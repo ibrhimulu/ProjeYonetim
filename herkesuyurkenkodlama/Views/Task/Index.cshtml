@@ -1,1 +1,208 @@
-﻿görev
+﻿<div class="container mt-5">
+    <h2>Görevler</h2>
+    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addTaskModal">Yeni Görev Ekle</button>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Görev Başlığı</th>
+                <th>Açıklama</th>
+                <th>Durum</th>
+                <th>Kullanıcı</th>
+                <th>Alt Görevler</th>
+                <th>Yorumlar</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Görev 1</td>
+                <td>Görev 1 açıklaması</td>
+                <td>Devam Ediyor</td>
+                <td><img src="path/to/image1.jpg" alt="" class="user-avatar"> John Doe</td>
+                <td>
+                    <ul>
+                        <li>Alt Görev 1</li>
+                        <li>Alt Görev 2</li>
+                    </ul>
+                </td>
+                <td><button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#addCommentModal">Yorum Yap</button></td>
+                <td>
+                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#editTaskModal">Düzenle</button>
+                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteTaskModal">Sil</button>
+                </td>
+            </tr>
+            <!-- Diğer görevler de buraya eklenebilir -->
+        </tbody>
+    </table>
+
+    <!-- Alt Görevler Bölümü -->
+    <div class="row">
+        <div class="col-md-4">
+            <h5>Yeni Görevler</h5>
+            <ul class="list-group">
+                <li class="list-group-item">Görev 1 (John Doe)</li>
+                <li class="list-group-item">Görev 2 (Jane Smith)</li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h5>Devam Eden Görevler</h5>
+            <ul class="list-group">
+                <li class="list-group-item">Görev 3 (Alice Johnson)</li>
+                <li class="list-group-item">Görev 4 (Bob Brown)</li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h5>Tamamlanmış Görevler</h5>
+            <ul class="list-group">
+                <li class="list-group-item">Görev 5 (Emily Davis)</li>
+                <li class="list-group-item">Görev 6 (Michael Wilson)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- Yeni Görev Ekleme Modal -->
+<div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 100px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTaskModalLabel">Yeni Görev Ekle</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="taskTitle" class="form-label">Görev Başlığı</label>
+                        <input type="text" class="form-control" id="taskTitle" placeholder="Görev başlığını girin">
+                    </div>
+                    <div class="mb-3">
+                        <label for="taskDescription" class="form-label">Görev Açıklaması</label>
+                        <textarea class="form-control" id="taskDescription" rows="3" placeholder="Görev açıklamasını girin"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="taskUser" class="form-label">Kullanıcı</label>
+                        <select class="form-control" id="taskUser">
+                            <option value="John Doe">John Doe</option>
+                            <option value="Jane Smith">Jane Smith</option>
+                            <option value="Alice Johnson">Alice Johnson</option>
+                            <option value="Bob Brown">Bob Brown</option>
+                            <option value="Emily Davis">Emily Davis</option>
+                            <option value="Michael Wilson">Michael Wilson</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="taskStatus" class="form-label">Durum</label>
+                        <select class="form-control" id="taskStatus">
+                            <option value="new">Yeni</option>
+                            <option value="in-progress">Devam Ediyor</option>
+                            <option value="completed">Tamamlandı</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="subtasks" class="form-label">Alt Görevler</label>
+                        <textarea class="form-control" id="subtasks" rows="3" placeholder="Alt görevleri virgülle ayırarak girin"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-primary">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Görev Düzenleme Modal -->
+<div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 100px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editTaskModalLabel">Görevi Düzenle</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="editTaskTitle" class="form-label">Görev Başlığı</label>
+                        <input type="text" class="form-control" id="editTaskTitle" placeholder="Görev başlığını girin">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editTaskDescription" class="form-label">Görev Açıklaması</label>
+                        <textarea class="form-control" id="editTaskDescription" rows="3" placeholder="Görev açıklamasını girin"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editTaskUser" class="form-label">Kullanıcı</label>
+                        <select class="form-control" id="editTaskUser">
+                            <option value="John Doe">John Doe</option>
+                            <option value="Jane Smith">Jane Smith</option>
+                            <option value="Alice Johnson">Alice Johnson</option>
+                            <option value="Bob Brown">Bob Brown</option>
+                            <option value="Emily Davis">Emily Davis</option>
+                            <option value="Michael Wilson">Michael Wilson</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editTaskStatus" class="form-label">Durum</label>
+                        <select class="form-control" id="editTaskStatus">
+                            <option value="new">Yeni</option>
+                            <option value="in-progress">Devam Ediyor</option>
+                            <option value="completed">Tamamlandı</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editSubtasks" class="form-label">Alt Görevler</label>
+                        <textarea class="form-control" id="editSubtasks" rows="3" placeholder="Alt görevleri virgülle ayırarak girin"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-primary">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Görev Silme Modal -->
+<div class="modal fade" id="deleteTaskModal" tabindex="-1" aria-labelledby="deleteTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 100px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteTaskModalLabel">Görevi Sil</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Bu görevi silmek istediğinizden emin misiniz?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-danger">Sil</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Yorum Yapma Modal -->
+<div class="modal fade" id="addCommentModal" tabindex="-1" aria-labelledby="addCommentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 100px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCommentModalLabel">Yorum Yap</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="commentText" class="form-label">Yorum</label>
+                        <textarea class="form-control" id="commentText" rows="3" placeholder="Yorumunuzu girin"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-primary">Gönder</button>
+            </div>
+        </div>
+    </div>
+</div>
