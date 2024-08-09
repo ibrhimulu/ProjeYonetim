@@ -1,4 +1,5 @@
-﻿@{
+﻿@model LoginViewModel
+@{
     Layout = null;
 }
 
@@ -75,7 +76,15 @@
             color: #6c757d;
         }
 
-        /* Ana Sayfa Butonu */
+        .input-group {
+            margin-bottom: 2.5rem; /* Spacing between input fields */
+        }
+
+        .text-danger {
+            font-size: 0.875rem;
+            padding-top: 0.25rem;
+        }
+
         .home-button {
             position: absolute;
             bottom: 20px;
@@ -107,18 +116,21 @@
                 <div class="card">
                     <div class="card-body">
                         <h3 class="card-title text-center">Giriş Yap</h3>
-                        <form method="post" action="/Account/Login">
-                            <div class="mb-3 input-group">
-                                <span class="input-group-text">
-                                    <i class="fas fa-user"></i>
-                                </span>
-                                <input type="text" class="form-control" id="username" name="username" placeholder="Kullanıcı adınızı girin" required>
+                        <form method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+                            <div class="mb-3">
+                                <label class="form-label" for="username">
+                                    <i class="fas fa-user"></i> Kullanıcı Adı
+                                </label>
+                                <input type="text" asp-for="Username" class="form-control" id="username" name="username" placeholder="Kullanıcı adınızı girin">
+                                <span asp-validation-for="Username" class="text-danger"></span>
                             </div>
-                            <div class="mb-3 input-group">
-                                <span class="input-group-text">
-                                    <i class="fas fa-lock"></i>
-                                </span>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Şifrenizi girin" required>
+                            <div class="mb-3">
+                                <label class="form-label" for="password">
+                                    <i class="fas fa-lock"></i> Şifre
+                                </label>
+                                <input type="password" asp-for="Password" class="form-control" id="password" name="password" placeholder="Şifrenizi girin">
+                                <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Giriş Yap</button>
                         </form>

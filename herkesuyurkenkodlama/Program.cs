@@ -1,3 +1,6 @@
+using herkesuyurkenkodlama.Contexts;
+using Microsoft.EntityFrameworkCore;
+
 namespace herkesuyurkenkodlama
 {
     public class Program
@@ -7,7 +10,14 @@ namespace herkesuyurkenkodlama
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+            // Add DbContext to the container.
+            builder.Services.AddDbContext<ApplicationDbContext>(opts =>
+            {
+                opts.UseSqlServer(builder.Configuration.GetConnectionString("PersonDatabase"));
+                //opts.UseLazyLoadingProxies();  //Eðer Lazy Loading kullanýyorsanýz bu satýrý uncomment yapýn.
+            });
 
             var app = builder.Build();
 
