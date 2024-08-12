@@ -15,7 +15,7 @@ namespace herkesuyurkenkodlama.Models
         public string? Description { get; set; }
         public int OwnerUserId { get; set; }
         public bool? IsActive { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
         public int DepartmentId { get; set; }
         public int SubDepartmentId { get; set; }
 
