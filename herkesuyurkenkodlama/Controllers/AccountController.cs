@@ -55,7 +55,7 @@ namespace herkesuyurkenkodlama.Controllers
                     User user = new()
                     {
                         Username = model.Username,
-                        Password = model.Password,
+                        Password = hashedPassword,
                         RoleId = 1
                     };
 

@@ -101,6 +101,23 @@
             .home-button:hover {
                 color: #ddd;
             }
+
+        .register-link {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+            .register-link a {
+                color: #007bff;
+                text-decoration: none;
+                font-weight: bold;
+                transition: color 0.3s ease;
+            }
+
+                .register-link a:hover {
+                    color: #0056b3;
+                }
     </style>
 </head>
 <body>
@@ -134,6 +151,11 @@
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Giriş Yap</button>
                         </form>
+
+                        <!-- Üye Olma Bağlantısı -->
+                        <div class="register-link">
+                            <p style="color:black">Üye değil misiniz? <a asp-area="" asp-controller="Account" asp-action="Register">Üye olun</a></p>
+                        </div>
                     </div>
                 </div>
             </div>

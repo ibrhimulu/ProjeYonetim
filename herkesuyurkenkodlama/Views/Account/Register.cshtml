@@ -101,6 +101,23 @@
             .home-button:hover {
                 color: #ddd;
             }
+
+         .login-link {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+            .login-link a {
+                color: #007bff;
+                text-decoration: none;
+                font-weight: bold;
+                transition: color 0.3s ease;
+            }
+
+                .login-link a:hover {
+                    color: #0056b3;
+                }
     </style>
 </head>
 <body>
@@ -109,7 +126,7 @@
         <i class="fas fa-home"></i> Ana Sayfaya Dön
     </a>
 
-    <!-- Login Form -->
+    <!-- Register Form -->
     <div class="container d-flex justify-content-center align-items-center vh-100">
         <div class="row w-100">
             <div class="col-md-6 offset-md-3">
@@ -142,6 +159,11 @@
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Üye Ol</button>
                         </form>
+
+                        <!-- Giriş Yapma Bağlantısı -->
+                        <div class="login-link">
+                            <p style="color:black">Zaten üye misiniz? <a asp-area="" asp-controller="Account" asp-action="Login">Giriş yapın</a></p>
+                        </div>
                     </div>
                 </div>
             </div>
