@@ -31,6 +31,7 @@ namespace herkesuyurkenkodlama.Contexts
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=DESKTOP-9MUK3CO;Initial Catalog=deneme;Integrated Security=True;TrustServerCertificate=True;");
             }
         }
@@ -236,18 +237,17 @@ namespace herkesuyurkenkodlama.Contexts
 
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
 
-                entity.Property(e => e.IsActive)
-                    .IsRequired()
-                    .HasDefaultValueSql("((1))");
+                entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.RoleId).HasColumnName("RoleID");
+                entity.Property(e => e.RoleId)
+                    .HasColumnName("RoleID")
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.SubDepartmentId).HasColumnName("SubDepartmentID");
 
                 entity.HasOne(d => d.Department)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.DepartmentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_user_mdepartment");
 
                 entity.HasOne(d => d.Role)
@@ -259,7 +259,6 @@ namespace herkesuyurkenkodlama.Contexts
                 entity.HasOne(d => d.SubDepartment)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.SubDepartmentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_user_sdepartment");
             });
 
