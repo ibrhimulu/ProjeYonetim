@@ -9,7 +9,7 @@ namespace herkesuyurkenkodlama.Models
         public int TaskId { get; set; }
         public int UserId { get; set; }
         public string? CommentText { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
         public bool? IsActive { get; set; }
         public int DepartmentId { get; set; }
         public int SubDepartmentId { get; set; }

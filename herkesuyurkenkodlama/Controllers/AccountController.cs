@@ -1,7 +1,10 @@
 ﻿using herkesuyurkenkodlama.Contexts;
 using herkesuyurkenkodlama.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using NETCore.Encrypt.Extensions;
+using System.Security.Claims;
 
 namespace herkesuyurkenkodlama.Controllers
 {
@@ -28,8 +31,27 @@ namespace herkesuyurkenkodlama.Controllers
         {
             if (ModelState.IsValid)
             {
-                //Login işlemleri
-                             
+                string md5Salt = _configuration.GetValue<string>("AppSettings:MD5Salt");
+                string saltedPassword = model.Password + md5Salt;
+                string hashedPassword = saltedPassword.MD5();
+
+                User user = _context.Users.SingleOrDefault(x => x.Username.ToLower() == model.Username.ToLower()
+                && x.Password == hashedPassword);
+
+                if (user != null)
+                {
+                    if (user.IsActive == false)
+                    {
+                        ModelState.AddModelError(nameof(model.Username), "Kullanıcı kilitli.");
+                        return View(model);
+
+                    }                   
+                }
+
+                else
+                {
+                    ModelState.AddModelError("", "Öğrenci no veya şifre yanlış.");
+                }
 
             }
             return View(model);
@@ -47,8 +69,16 @@ namespace herkesuyurkenkodlama.Controllers
 
                 if (ModelState.IsValid)
                 {
-                   
-                    string md5Salt= _configuration.GetValue<string>("AppSettings:MD5Salt");
+                
+
+                    if (_context.Users.Any(x => x.Username.ToLower() == model.Username.ToLower()))
+                    {
+                    ModelState.AddModelError(nameof(model.Username), "Kullanıcı zaten kayıtlı");
+                    View(model);
+                    }
+
+
+                    string md5Salt = _configuration.GetValue<string>("AppSettings:MD5Salt");
                     string saltedPassword = model.Password + md5Salt;
                     string hashedPassword = saltedPassword.MD5(); 
 
