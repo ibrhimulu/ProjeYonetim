@@ -1,4 +1,5 @@
 using herkesuyurkenkodlama.Contexts;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 namespace herkesuyurkenkodlama
@@ -19,6 +20,18 @@ namespace herkesuyurkenkodlama
                 //opts.UseLazyLoadingProxies();  //Eðer Lazy Loading kullanýyorsanýz bu satýrý uncomment yapýn.
             });
 
+            builder.Services
+               .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+               .AddCookie(opts =>
+               {
+                   opts.Cookie.Name = "herkesuyurkenkodlama.auth";          /*Cookie adi*/
+                   opts.ExpireTimeSpan = TimeSpan.FromDays(7);    /*Cookie kalma süresi*/
+                   opts.SlidingExpiration = false;
+                   opts.LoginPath = "/Account/Login";
+                   opts.LogoutPath = "/Account/Logout";
+                   opts.AccessDeniedPath = "/Home/AccessDenied";
+               });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -29,6 +42,8 @@ namespace herkesuyurkenkodlama
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

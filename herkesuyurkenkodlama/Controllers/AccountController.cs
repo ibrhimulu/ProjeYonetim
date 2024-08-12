@@ -44,8 +44,22 @@ namespace herkesuyurkenkodlama.Controllers
                     {
                         ModelState.AddModelError(nameof(model.Username), "Kullanıcı kilitli.");
                         return View(model);
+                    }
 
-                    }                   
+                    List<Claim> claims = new List<Claim>();
+                    claims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()));
+                    claims.Add(new Claim(ClaimTypes.Name, user.NameSurname ?? string.Empty));
+                    claims.Add(new Claim(ClaimTypes.Role, user.RoleId.ToString()));
+
+                    claims.Add(new Claim("Username", user.Username));
+
+                    ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme); /*yani "Cookie"*/
+
+                    ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+
+                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                    return RedirectToAction("Index", "Home");
                 }
 
                 else
@@ -105,5 +119,16 @@ namespace herkesuyurkenkodlama.Controllers
                 return View(model);                       
         }
 
+
+        public ActionResult Profile() 
+        {
+            return View();
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction(nameof(Login));
+        }
     }
 }

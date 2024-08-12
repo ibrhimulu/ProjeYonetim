@@ -33,6 +33,15 @@ body {
         font-weight: bold;
     }
 
+    .navbar .nav-link.text-light {
+        color: #fff;
+        margin-right: 15px;
+    }
+
+        .navbar .nav-link.text-light:hover {
+            color: #adb5bd;
+        }
+
 /* Sidebar Styles */
 .sidebar {
     width: 250px;
