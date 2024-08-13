@@ -52,7 +52,12 @@ namespace herkesuyurkenkodlama.Controllers
                     List<Claim> claims = new List<Claim>();
                     claims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()));
                     claims.Add(new Claim(ClaimTypes.Name, user.NameSurname ?? string.Empty));
-                    claims.Add(new Claim(ClaimTypes.Role, user.RoleId.ToString()));
+                    // Role tablosundan rol adını alıyoruz
+                    var role = _context.Roles.FirstOrDefault(r => r.RoleId == user.RoleId);
+                    if (role != null)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, role.Rolename));
+                    }
 
                     claims.Add(new Claim("Username", user.Username));
 

@@ -51,7 +51,7 @@
     <div class="d-flex">
         <nav class="sidebar bg-light">
             <h2 class="sidebar-title">Menü</h2>
-            <ul class="nav flex-column">
+            <ul class="nav flex-column">                
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i> Ana Sayfa</a>
                 </li>
@@ -64,9 +64,17 @@
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="Task" asp-action="Index"><i class="fa fa-tasks"></i> Görevler</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="Index"><i class="fa fa-cogs"></i> Admin</a>
-                </li>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="Index"><i class="fa fa-cogs"></i> Admin</a>
+                        </li>
+                    }
+                }
+                
             </ul>
         </nav>
 
