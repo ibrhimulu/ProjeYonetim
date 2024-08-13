@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using NETCore.Encrypt.Extensions;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace herkesuyurkenkodlama.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
        
@@ -20,12 +22,13 @@ namespace herkesuyurkenkodlama.Controllers
             _configuration = configuration;
         }
 
-
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult Login(LoginViewModel model)
         {
@@ -71,53 +74,50 @@ namespace herkesuyurkenkodlama.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult Register(RegisterViewModel model)
         {
-            
-
-                if (ModelState.IsValid)
+            if (ModelState.IsValid)
+            {
+                if (_context.Users.Any(x => x.Username.ToLower() == model.Username.ToLower()))
                 {
-                
-
-                    if (_context.Users.Any(x => x.Username.ToLower() == model.Username.ToLower()))
-                    {
-                    ModelState.AddModelError(nameof(model.Username), "Kullanıcı zaten kayıtlı");
-                    View(model);
-                    }
-
-
-                    string md5Salt = _configuration.GetValue<string>("AppSettings:MD5Salt");
-                    string saltedPassword = model.Password + md5Salt;
-                    string hashedPassword = saltedPassword.MD5(); 
-
-                    User user = new()
-                    {
-                        Username = model.Username,
-                        Password = hashedPassword,
-                        RoleId = 1
-                    };
-
-                    _context.Users.Add(user);
-                    int affectedRowCount = _context.SaveChanges(); /*etkilenen satır sayısı*/
-
-                    if (affectedRowCount == 0)
-                    {
-                        ModelState.AddModelError("", "Bu kullanıcı eklenemez.");
-                    }
-                    else
-                    {
-                        return RedirectToAction(nameof(Login));
-                    }
-
+                    ModelState.AddModelError(nameof(model.Username), "Bu kullanıcı zaten kayıtlı.");
+                    return View(model);  
                 }
-                return View(model);                       
+
+                string md5Salt = _configuration.GetValue<string>("AppSettings:MD5Salt");
+                string saltedPassword = model.Password + md5Salt;
+                string hashedPassword = saltedPassword.MD5();
+
+                User user = new()
+                {
+                    Username = model.Username,
+                    Password = hashedPassword,
+                    RoleId = 1
+                };
+
+                _context.Users.Add(user);
+                int affectedRowCount = _context.SaveChanges(); /*etkilenen satır sayısı*/
+
+                if (affectedRowCount == 0)
+                {
+                    ModelState.AddModelError("", "Bu kullanıcı eklenemez.");
+                }
+                else
+                {
+                    return RedirectToAction(nameof(Login));
+                }
+            }
+            return View(model);
         }
+
 
 
         public ActionResult Profile() 
