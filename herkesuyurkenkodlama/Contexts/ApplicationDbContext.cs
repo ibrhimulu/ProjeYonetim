@@ -48,9 +48,7 @@ namespace herkesuyurkenkodlama.Contexts
 
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
 
-                entity.Property(e => e.IsActive)
-                    .IsRequired()
-                    .HasDefaultValueSql("((1))");
+                entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.SubDepartmentId).HasColumnName("SubDepartmentID");
 
@@ -61,13 +59,11 @@ namespace herkesuyurkenkodlama.Contexts
                 entity.HasOne(d => d.Department)
                     .WithMany(p => p.Comments)
                     .HasForeignKey(d => d.DepartmentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_comment_mdepartment");
 
                 entity.HasOne(d => d.SubDepartment)
                     .WithMany(p => p.Comments)
                     .HasForeignKey(d => d.SubDepartmentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_comment_sdepartment");
 
                 entity.HasOne(d => d.Task)
@@ -104,9 +100,7 @@ namespace herkesuyurkenkodlama.Contexts
 
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
 
-                entity.Property(e => e.IsActive)
-                    .IsRequired()
-                    .HasDefaultValueSql("((1))");
+                entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.OwnerUserId).HasColumnName("OwnerUserID");
 
@@ -115,19 +109,16 @@ namespace herkesuyurkenkodlama.Contexts
                 entity.HasOne(d => d.Department)
                     .WithMany(p => p.Projects)
                     .HasForeignKey(d => d.DepartmentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_project_mdepartment");
 
                 entity.HasOne(d => d.OwnerUser)
                     .WithMany(p => p.Projects)
                     .HasForeignKey(d => d.OwnerUserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_project_user");
 
                 entity.HasOne(d => d.SubDepartment)
                     .WithMany(p => p.Projects)
                     .HasForeignKey(d => d.SubDepartmentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_project_sdepartment");
             });
 
@@ -152,16 +143,13 @@ namespace herkesuyurkenkodlama.Contexts
 
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
 
-                entity.Property(e => e.IsActive)
-                    .IsRequired()
-                    .HasDefaultValueSql("((1))");
+                entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.SubDepartmentName).HasMaxLength(50);
 
                 entity.HasOne(d => d.Department)
                     .WithMany(p => p.Sdepartments)
                     .HasForeignKey(d => d.DepartmentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_sdepartment_mdepartment");
             });
 
@@ -184,9 +172,7 @@ namespace herkesuyurkenkodlama.Contexts
 
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
 
-                entity.Property(e => e.IsActive)
-                    .IsRequired()
-                    .HasDefaultValueSql("((1))");
+                entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.ProjectId).HasColumnName("ProjectID");
 
@@ -205,7 +191,6 @@ namespace herkesuyurkenkodlama.Contexts
                 entity.HasOne(d => d.Department)
                     .WithMany(p => p.Tasks)
                     .HasForeignKey(d => d.DepartmentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_task_mdepartment");
 
                 entity.HasOne(d => d.Project)
@@ -223,7 +208,6 @@ namespace herkesuyurkenkodlama.Contexts
                 entity.HasOne(d => d.SubDepartment)
                     .WithMany(p => p.Tasks)
                     .HasForeignKey(d => d.SubDepartmentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_task_sdepartment");
             });
 

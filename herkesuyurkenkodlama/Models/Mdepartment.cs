@@ -16,7 +16,7 @@ namespace herkesuyurkenkodlama.Models
 
         public int DepartmentId { get; set; }
         public string DepartmanName { get; set; } = null!;
-        public bool IsActive { get; set; }
+        public bool? IsActive { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Project> Projects { get; set; }

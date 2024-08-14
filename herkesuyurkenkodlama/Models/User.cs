@@ -17,7 +17,7 @@ namespace herkesuyurkenkodlama.Models
         public string Password { get; set; } = null!;
         public string? NameSurname { get; set; }
         public int RoleId { get; set; }
-        public DateTime? CreatedAt { get; set; } = DateTime.Now;
+        public DateTime? CreatedAt { get; set; }
         public int? DepartmentId { get; set; }
         public int? SubDepartmentId { get; set; }
         public bool? IsActive { get; set; }

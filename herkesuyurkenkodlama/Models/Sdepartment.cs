@@ -15,10 +15,10 @@ namespace herkesuyurkenkodlama.Models
 
         public int SubDepartmentId { get; set; }
         public string SubDepartmentName { get; set; } = null!;
-        public int DepartmentId { get; set; }
+        public int? DepartmentId { get; set; }
         public bool? IsActive { get; set; }
 
-        public virtual Mdepartment Department { get; set; } = null!;
+        public virtual Mdepartment? Department { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Project> Projects { get; set; }
         public virtual ICollection<Task> Tasks { get; set; }

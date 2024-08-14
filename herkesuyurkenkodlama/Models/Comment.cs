@@ -9,13 +9,13 @@ namespace herkesuyurkenkodlama.Models
         public int TaskId { get; set; }
         public int UserId { get; set; }
         public string? CommentText { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime? CreatedAt { get; set; }
         public bool? IsActive { get; set; }
-        public int DepartmentId { get; set; }
-        public int SubDepartmentId { get; set; }
+        public int? DepartmentId { get; set; }
+        public int? SubDepartmentId { get; set; }
 
-        public virtual Mdepartment Department { get; set; } = null!;
-        public virtual Sdepartment SubDepartment { get; set; } = null!;
+        public virtual Mdepartment? Department { get; set; }
+        public virtual Sdepartment? SubDepartment { get; set; }
         public virtual Task Task { get; set; } = null!;
         public virtual User User { get; set; } = null!;
     }

@@ -69,11 +69,20 @@
                 {
                     if (User.IsInRole("Admin"))
                     {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="Index"><i class="fa fa-cogs"></i> Admin</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-cogs"></i> Admin
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="adminDropdown">
+                                <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Index"><i class="fa fa-user"></i> Kullanıcılar</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Project" asp-action="Index"><i class="fa fa-folder"></i> Projeler</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Task" asp-action="Index"><i class="fa fa-tasks"></i> Görevler</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Team" asp-action="Index"><i class="fa fa-users"></i> Takımlar</a>
+                            </div>
                         </li>
                     }
                 }
+
                 
             </ul>
         </nav>
