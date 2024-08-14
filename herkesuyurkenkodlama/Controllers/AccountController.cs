@@ -72,7 +72,7 @@ namespace herkesuyurkenkodlama.Controllers
 
                 else
                 {
-                    ModelState.AddModelError("", "Öğrenci no veya şifre yanlış.");
+                    ModelState.AddModelError("", "Kullanıcı adı veya şifre yanlış.");
                 }
 
             }
