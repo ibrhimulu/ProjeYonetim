@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using NETCore.Encrypt.Extensions;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.DataAnnotations;
 
 namespace herkesuyurkenkodlama.Controllers
 {
@@ -105,7 +106,8 @@ namespace herkesuyurkenkodlama.Controllers
                 {
                     Username = model.Username,
                     Password = hashedPassword,
-                    RoleId = 1
+                    RoleId = 1,
+                    ProfileImagePath = "~/uploads/no-image.jpg"
                 };
 
                 _context.Users.Add(user);
@@ -127,8 +129,53 @@ namespace herkesuyurkenkodlama.Controllers
 
         public ActionResult Profile() 
         {
+            int userid = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            User user = _context.Users.SingleOrDefault(x => x.UserId == userid);
+
+            ViewData["NameSurname"] = user.NameSurname;
+            ViewData["ProfileImage"] = user.ProfileImagePath;
+
             return View();
         }
+
+        [HttpPost]
+        public IActionResult ProfileChangeNameSurname([Required][StringLength(50)] string? namesurname)
+        {
+            if (ModelState.IsValid)
+            {
+                int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                User user = _context.Users.SingleOrDefault(x => x.UserId == userId);                
+
+                user.NameSurname = namesurname;
+                _context.SaveChanges();
+
+                return RedirectToAction(nameof(Profile));
+            }
+
+            //ProfileInfoLoader();
+            return View("Profile");
+        }
+
+        //[HttpPost]
+        //public IActionResult ProfilChangePassword([Required][MinLength(6)][MaxLength(6)] string? password)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        Guid userid = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+        //        User user = _databaseContext.Users.SingleOrDefault(x => x.Id == userid);
+
+        //        string hashedPassword = DoMD5HashedString(password);
+
+        //        user.Password = hashedPassword;
+        //        _databaseContext.SaveChanges();
+
+        //        ViewData["result"] = "PasswordChanged";
+        //    }
+
+        //    ProfileInfoLoader();
+        //    return View("Profile");
+        //}
 
         public IActionResult Logout()
         {
