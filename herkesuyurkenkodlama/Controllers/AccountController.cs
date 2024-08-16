@@ -35,9 +35,7 @@ namespace herkesuyurkenkodlama.Controllers
         {
             if (ModelState.IsValid)
             {
-                string md5Salt = _configuration.GetValue<string>("AppSettings:MD5Salt");
-                string saltedPassword = model.Password + md5Salt;
-                string hashedPassword = saltedPassword.MD5();
+                string hashedPassword = DoMD5HashedString(model.Password);
 
                 User user = _context.Users.SingleOrDefault(x => x.Username.ToLower() == model.Username.ToLower()
                 && x.Password == hashedPassword);
@@ -95,18 +93,17 @@ namespace herkesuyurkenkodlama.Controllers
                 if (_context.Users.Any(x => x.Username.ToLower() == model.Username.ToLower()))
                 {
                     ModelState.AddModelError(nameof(model.Username), "Bu kullanıcı zaten kayıtlı.");
-                    return View(model);  
+                    return View(model);
                 }
 
-                string md5Salt = _configuration.GetValue<string>("AppSettings:MD5Salt");
-                string saltedPassword = model.Password + md5Salt;
-                string hashedPassword = saltedPassword.MD5();
+                string hashedPassword = DoMD5HashedString(model.Password);
 
                 User user = new()
                 {
                     Username = model.Username,
                     Password = hashedPassword,
                     RoleId = 1,
+                    CreatedAt = DateTime.Now,
                     ProfileImagePath = "~/uploads/no-image.jpg"
                 };
 
@@ -125,17 +122,28 @@ namespace herkesuyurkenkodlama.Controllers
             return View(model);
         }
 
-
+        private string DoMD5HashedString(string s)
+        {
+            string md5Salt = _configuration.GetValue<string>("AppSettings:MD5Salt");
+            string salted = s + md5Salt;
+            string hashed = salted.MD5();
+            return hashed;
+        }
 
         public ActionResult Profile() 
+        {
+            ProfileInfoLoader();
+
+            return View();
+        }
+
+        private void ProfileInfoLoader()
         {
             int userid = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             User user = _context.Users.SingleOrDefault(x => x.UserId == userid);
 
             ViewData["NameSurname"] = user.NameSurname;
             ViewData["ProfileImage"] = user.ProfileImagePath;
-
-            return View();
         }
 
         [HttpPost]
@@ -143,39 +151,72 @@ namespace herkesuyurkenkodlama.Controllers
         {
             if (ModelState.IsValid)
             {
-                int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                User user = _context.Users.SingleOrDefault(x => x.UserId == userId);                
+                int userid = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                User user = _context.Users.SingleOrDefault(x => x.UserId == userid);
 
+                
                 user.NameSurname = namesurname;
                 _context.SaveChanges();
 
                 return RedirectToAction(nameof(Profile));
             }
 
-            //ProfileInfoLoader();
+            ProfileInfoLoader();
             return View("Profile");
         }
 
-        //[HttpPost]
-        //public IActionResult ProfilChangePassword([Required][MinLength(6)][MaxLength(6)] string? password)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        Guid userid = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        [HttpPost]
+        public IActionResult ProfileChangePassword([Required]
+        [MinLength(6, ErrorMessage = "Şifre en az 6 karakterden oluşmalıdır.")]
+        [MaxLength(15, ErrorMessage = "Şifre en fazla 15 karakterden oluşmalıdır.")]
+        [RegularExpression(@"^(?=.*[a-zğüşöçı])(?=.*[A-ZĞÜŞÖÇİ])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-zğüşöçıĞÜŞÖÇİ\d@$!%*?&.]{6,15}$",
+        ErrorMessage = "Şifre en az bir büyük harf, bir küçük harf, bir rakam ve bir özel karakter içermelidir.")] string? password)
+        {
+            if (ModelState.IsValid)
+            {
+                int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                User user = _context.Users.SingleOrDefault(x => x.UserId == userId);
 
-        //        User user = _databaseContext.Users.SingleOrDefault(x => x.Id == userid);
+                string hashedPassword = DoMD5HashedString(password);
 
-        //        string hashedPassword = DoMD5HashedString(password);
+                user.Password = hashedPassword;
+                _context.SaveChanges();
 
-        //        user.Password = hashedPassword;
-        //        _databaseContext.SaveChanges();
+                ViewData["result"] = "PasswordChanged";
+            }
 
-        //        ViewData["result"] = "PasswordChanged";
-        //    }
+            ProfileInfoLoader();
+            return View("Profile");
+        }
 
-        //    ProfileInfoLoader();
-        //    return View("Profile");
-        //}
+
+        [HttpPost]
+        public IActionResult ProfilChangeImage([Required] IFormFile file)
+        {
+            if (ModelState.IsValid)
+            {
+
+                int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                User user = _context.Users.SingleOrDefault(x => x.UserId == userId);
+
+
+                string filename = $"p_{userId}.jpg";
+                Stream stream = new FileStream($"wwwroot/uploads/{filename}", FileMode.OpenOrCreate);
+
+                file.CopyTo(stream);
+
+                stream.Close();
+                stream.Dispose();
+
+                user.ProfileImagePath = filename;
+                _context.SaveChanges();
+
+                return RedirectToAction(nameof(Profile));
+            }
+
+            ProfileInfoLoader();
+            return View("Profile");
+        }
 
         public IActionResult Logout()
         {

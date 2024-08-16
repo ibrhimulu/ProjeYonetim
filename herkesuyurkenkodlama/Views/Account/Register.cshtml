@@ -141,15 +141,30 @@
                                 <label class="form-label" for="password">
                                     <i class="fas fa-lock"></i> Şifre
                                 </label>
-                                <input type="password" asp-for="Password" class="form-control" id="password" name="password" placeholder="Şifrenizi girin">
+                                <div class="input-group">
+                                    <input type="password" asp-for="Password" class="form-control" id="password" name="password" placeholder="Şifrenizi girin">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
                                 <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
+
                             <!-- Şifreyi Doğrula Alanı -->
                             <div class="mb-3">
                                 <label class="form-label" for="confirmPassword">
                                     <i class="fas fa-lock"></i> Şifreyi Doğrula
                                 </label>
-                                <input type="password" asp-for="RePassword" class="form-control" id="RePassword" name="RePassword" placeholder="Şifrenizi tekrar girin">
+                                <div class="input-group">
+                                    <input type="password" asp-for="RePassword" class="form-control" id="RePassword" name="RePassword" placeholder="Şifrenizi tekrar girin">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" id="toggleRePassword">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
                                 <span asp-validation-for="RePassword" class="text-danger"></span>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Üye Ol</button>
@@ -170,5 +185,42 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    <script>
+        // Şifre alanı için
+        document.getElementById('togglePassword').addEventListener('click', function (e) {
+            const passwordInput = document.getElementById('password');
+            const icon = e.currentTarget.querySelector('i');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // Şifreyi Doğrula alanı için
+        document.getElementById('toggleRePassword').addEventListener('click', function (e) {
+            const passwordInput = document.getElementById('RePassword');
+            const icon = e.currentTarget.querySelector('i');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    </script>
+
+
+
 </body>
 </html>

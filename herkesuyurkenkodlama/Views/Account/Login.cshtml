@@ -5,6 +5,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -77,7 +78,8 @@
         }
 
         .input-group {
-            margin-bottom: 2.5rem; /* Spacing between input fields */
+            margin-bottom: 2.5rem;
+            /* Spacing between input fields */
         }
 
         .text-danger {
@@ -118,9 +120,14 @@
                 .register-link a:hover {
                     color: #0056b3;
                 }
+
+        .input-group-append {
+            cursor: pointer;
+        }
     </style>
 </head>
-<body>   
+
+<body>
     <!-- Login Form -->
     <div class="container d-flex justify-content-center align-items-center vh-100">
         <div class="row w-100">
@@ -141,7 +148,14 @@
                                 <label class="form-label" for="password">
                                     <i class="fas fa-lock"></i> Şifre
                                 </label>
-                                <input type="password" asp-for="Password" class="form-control" id="password" name="password" placeholder="Şifrenizi girin">
+                                <div class="input-group">
+                                    <input type="password" asp-for="Password" class="form-control" id="password" name="password" placeholder="Şifrenizi girin">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" onclick="togglePassword()">
+                                            <i class="fas fa-eye" id="toggleEye"></i>
+                                        </span>
+                                    </div>
+                                </div>
                                 <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Giriş Yap</button>
@@ -162,5 +176,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script>
+        function togglePassword() {
+            var passwordField = document.getElementById("password");
+            var toggleEye = document.getElementById("toggleEye");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                toggleEye.classList.remove("fa-eye");
+                toggleEye.classList.add("fa-eye-slash");
+            } else {
+                passwordField.type = "password";
+                toggleEye.classList.remove("fa-eye-slash");
+                toggleEye.classList.add("fa-eye");
+            }
+        }
+    </script>
 </body>
+
 </html>
