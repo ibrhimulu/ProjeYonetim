@@ -104,7 +104,7 @@ namespace herkesuyurkenkodlama.Controllers
                     Password = hashedPassword,
                     RoleId = 1,
                     CreatedAt = DateTime.Now,
-                    ProfileImagePath = "~/uploads/no-image.jpg"
+                    ProfileImagePath = "uploads/no-image.jpg"
                 };
 
                 _context.Users.Add(user);
