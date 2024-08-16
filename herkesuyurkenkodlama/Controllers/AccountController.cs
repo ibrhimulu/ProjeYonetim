@@ -191,29 +191,33 @@ namespace herkesuyurkenkodlama.Controllers
 
 
         [HttpPost]
-        public IActionResult ProfilChangeImage([Required] IFormFile file)
+        public IActionResult ProfileChangeImage([Required] IFormFile file)
         {
             if (ModelState.IsValid)
             {
-
                 int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 User user = _context.Users.SingleOrDefault(x => x.UserId == userId);
 
-
+                // Dosya adını belirliyoruz
                 string filename = $"p_{userId}.jpg";
-                Stream stream = new FileStream($"wwwroot/uploads/{filename}", FileMode.OpenOrCreate);
+                // Dosya yolunu belirliyoruz
+                string filePath = Path.Combine("uploads", filename);
 
-                file.CopyTo(stream);
+                // Tam dosya yolunu kullanarak dosyayı kaydediyoruz
+                using (Stream stream = new FileStream(Path.Combine("wwwroot", filePath), FileMode.OpenOrCreate))
+                {
+                    file.CopyTo(stream);
+                }
 
-                stream.Close();
-                stream.Dispose();
-
-                user.ProfileImagePath = filename;
+                // Dosya yolunu veritabanında saklıyoruz
+                user.ProfileImagePath = filePath;
                 _context.SaveChanges();
 
+                // Profile sayfasına yönlendirme yapıyoruz
                 return RedirectToAction(nameof(Profile));
             }
 
+            // Eğer ModelState geçerli değilse, profil bilgilerini yeniden yükleyip sayfayı tekrar gösteriyoruz
             ProfileInfoLoader();
             return View("Profile");
         }
