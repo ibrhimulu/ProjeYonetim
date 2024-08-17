@@ -197,27 +197,22 @@ namespace herkesuyurkenkodlama.Controllers
             {
                 int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 User user = _context.Users.SingleOrDefault(x => x.UserId == userId);
-
-                // Dosya adını belirliyoruz
+               
                 string filename = $"p_{userId}.jpg";
                 // Dosya yolunu belirliyoruz
                 string filePath = Path.Combine("uploads", filename);
-
-                // Tam dosya yolunu kullanarak dosyayı kaydediyoruz
+                
                 using (Stream stream = new FileStream(Path.Combine("wwwroot", filePath), FileMode.OpenOrCreate))
                 {
                     file.CopyTo(stream);
                 }
-
-                // Dosya yolunu veritabanında saklıyoruz
+                
                 user.ProfileImagePath = filePath;
                 _context.SaveChanges();
-
-                // Profile sayfasına yönlendirme yapıyoruz
+                                
                 return RedirectToAction(nameof(Profile));
             }
-
-            // Eğer ModelState geçerli değilse, profil bilgilerini yeniden yükleyip sayfayı tekrar gösteriyoruz
+            
             ProfileInfoLoader();
             return View("Profile");
         }
