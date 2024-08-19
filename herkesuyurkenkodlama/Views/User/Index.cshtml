@@ -1,0 +1,87 @@
+﻿@model List<UserViewModel>
+
+@{
+    ViewData["Title"] = "Kullanıcılar";
+}
+
+<div class="rov">
+    <div class="col">
+        <h1 class="display-4">@ViewData["Title"]</h1>
+        <hr />
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col">
+        <a asp-action="Create" class="btn btn-primary btn-sm"><i class="fa fa-plus me-2"></i>Yeni Kullanıcı</a>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col">
+        <table class="table table-hover table-sm">
+            <thead>
+                <tr>
+                    <th>Ad Soyad</th>
+                    <th>Kullanıcı Adı</th>
+                    <th>Rol</th>
+                    <th>Müdürlük</th>
+                    <th>Şeflik</th>
+                    <th>Aktiflik</th>                    
+                    <th>Oluşturma Tarihi</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (UserViewModel user in Model)
+                {
+                    <tr>
+                        <td>@user.NameSurname</td>
+                        <td>@user.Username</td>                        
+                        <td>
+                            @if (user.RoleId == 1)
+                            {
+                                <p>User</p>
+                            }
+                            else if (user.RoleId == 2)
+                            {
+                                <p>Admin</p>
+                            }
+                            else if (user.RoleId == 3)
+                            {
+                                <p>IT</p>
+                            }
+                            else if (user.RoleId == 4)
+                            {
+                                <p>Technic</p>
+                            }
+                            else
+                            {
+                                <p>Tester</p>
+                            }
+                        </td>
+                        <td>@user.DepartmentId</td>
+
+                        <td>@user.SubDepartmentId</td>
+                        <td>
+                            @if (user.IsActive == true)
+                            {
+                                <i class="fa fa-check text-success"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-times text-danger"></i>
+                            }
+                        </td>
+                        <td>@user.CreatedAt</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@user.UserId" class="btn btn-info btn-sm text-white"><i class="fa fa-edit me-2"></i>Düzenle</a>
+
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

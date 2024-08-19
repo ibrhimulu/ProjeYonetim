@@ -193,29 +193,60 @@ namespace herkesuyurkenkodlama.Controllers
         [HttpPost]
         public IActionResult ProfileChangeImage([Required] IFormFile file)
         {
+            if (file == null || file.Length == 0)
+            {
+                ModelState.AddModelError("file", "Lütfen bir dosya seçin.");
+                ProfileInfoLoader();
+                return View("Profile");
+            }
+
+            // Dosya uzantısını kontrol ediyoruz
+            string fileExtension = Path.GetExtension(file.FileName).ToLower();
+            if (fileExtension != ".jpg")
+            {
+                ModelState.AddModelError("file", "Sadece .jpg uzantılı dosyalar kabul edilir.");
+                ProfileInfoLoader();
+                return View("Profile");
+            }
+
             if (ModelState.IsValid)
             {
                 int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 User user = _context.Users.SingleOrDefault(x => x.UserId == userId);
-               
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                // Eski dosyayı sil
+                if (!string.IsNullOrEmpty(user.ProfileImagePath))
+                {
+                    var oldFilePath = Path.Combine("wwwroot", user.ProfileImagePath);
+                    if (System.IO.File.Exists(oldFilePath))
+                    {
+                        System.IO.File.Delete(oldFilePath);
+                    }
+                }
+
                 string filename = $"p_{userId}.jpg";
-                // Dosya yolunu belirliyoruz
                 string filePath = Path.Combine("uploads", filename);
-                
+
                 using (Stream stream = new FileStream(Path.Combine("wwwroot", filePath), FileMode.OpenOrCreate))
                 {
                     file.CopyTo(stream);
                 }
-                
+
                 user.ProfileImagePath = filePath;
                 _context.SaveChanges();
-                                
+
                 return RedirectToAction(nameof(Profile));
             }
-            
+
             ProfileInfoLoader();
             return View("Profile");
         }
+
 
         public IActionResult Logout()
         {

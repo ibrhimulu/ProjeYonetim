@@ -1,6 +1,7 @@
 using herkesuyurkenkodlama.Contexts;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace herkesuyurkenkodlama
 {
@@ -12,6 +13,7 @@ namespace herkesuyurkenkodlama
 
             // Add services to the container.
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             // Add DbContext to the container.
             builder.Services.AddDbContext<ApplicationDbContext>(opts =>
