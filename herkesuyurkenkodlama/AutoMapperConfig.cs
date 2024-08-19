@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using herkesuyurkenkodlama.Models;
-using herkesuyurkenkodlama.Models;
+
 
 namespace ProjeYonetim
 {
@@ -9,6 +9,8 @@ namespace ProjeYonetim
         public AutoMapperConfig()
         {
             CreateMap<User, UserViewModel>().ReverseMap();
+            CreateMap<Project, ProjectViewModel>().ReverseMap();
         }
     }
+
 }
