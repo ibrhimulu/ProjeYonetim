@@ -4,84 +4,106 @@
     ViewData["Title"] = "Kullanıcılar";
 }
 
-<div class="rov">
-    <div class="col">
-        <h1 class="display-4">@ViewData["Title"]</h1>
-        <hr />
-    </div>
-</div>
+<div class="container mt-4">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
 
-<div class="row mb-3">
-    <div class="col">
-        <a asp-action="Create" class="btn btn-primary btn-sm"><i class="fa fa-plus me-2"></i>Yeni Kullanıcı</a>
+    <div class="d-flex justify-content-between mb-3">
+        <a asp-action="Create" class="btn btn-primary btn-sm"><i class="fa fa-plus me-2 mr-1"></i>Yeni Kullanıcı</a>
     </div>
-</div>
 
-<div class="row mb-3">
-    <div class="col">
-        <table class="table table-hover table-sm">
-            <thead>
-                <tr>
-                    <th>Ad Soyad</th>
-                    <th>Kullanıcı Adı</th>
-                    <th>Rol</th>
-                    <th>Müdürlük</th>
-                    <th>Şeflik</th>
-                    <th>Aktiflik</th>                    
-                    <th>Oluşturma Tarihi</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (UserViewModel user in Model)
-                {
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-striped table-bordered table-hover table-sm">
+                <thead class="table-light">
                     <tr>
-                        <td>@user.NameSurname</td>
-                        <td>@user.Username</td>                        
-                        <td>
-                            @if (user.RoleId == 1)
-                            {
-                                <p>User</p>
-                            }
-                            else if (user.RoleId == 2)
-                            {
-                                <p>Admin</p>
-                            }
-                            else if (user.RoleId == 3)
-                            {
-                                <p>IT</p>
-                            }
-                            else if (user.RoleId == 4)
-                            {
-                                <p>Technic</p>
-                            }
-                            else
-                            {
-                                <p>Tester</p>
-                            }
-                        </td>
-                        <td>@user.DepartmentId</td>
-
-                        <td>@user.SubDepartmentId</td>
-                        <td>
-                            @if (user.IsActive == true)
-                            {
-                                <i class="fa fa-check text-success"></i>
-                            }
-                            else
-                            {
-                                <i class="fa fa-times text-danger"></i>
-                            }
-                        </td>
-                        <td>@user.CreatedAt</td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@user.UserId" class="btn btn-info btn-sm text-white"><i class="fa fa-edit me-2"></i>Düzenle</a>
-
-
-                        </td>
+                        <th>Kullanıcı Adı</th>
+                        <th>Ad Soyad</th>
+                        <th>Rol</th>
+                        <th>Müdürlük</th>
+                        <th>Şeflik</th>
+                        <th>Aktiflik</th>
+                        <th>Oluşturma Tarihi</th>
+                        <th>İşlemler</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (UserViewModel user in Model)
+                    {
+                        <tr>
+                            <td>@user.Username</td>
+                            <td>@user.NameSurname</td>
+                            <td>
+                                @switch (user.RoleId)
+                                {
+                                    case 1:
+                                        <span class="badge bg-secondary">User</span>
+                                        ; break;
+                                    case 2:
+                                        <span class="badge bg-primary">Admin</span>
+                                        ; break;
+                                    case 3:
+                                        <span class="badge bg-success">IT</span>
+                                        ; break;
+                                    case 4:
+                                        <span class="badge bg-warning text-dark">Technic</span>
+                                        ; break;
+                                    default:
+                                        <span class="badge bg-info">Tester</span>
+                                        ; break;
+                                }
+                            </td>
+                            <td>
+                                @switch (user.DepartmentId)
+                                {
+                                    case 1:
+                                        <span>Bilgi İşlem Daire Başkanlığı</span>
+                                        ; break;
+                                    case 2:
+                                        <span>Garaj</span>
+                                        ; break;
+                                    case 3:
+                                        <span>İnsan Kaynakları</span>
+                                        ; break;
+                                    default:
+                                        <span>-</span>
+                                        ; break;
+                                }
+                            </td>
+                            <td>
+                                @switch (user.SubDepartmentId)
+                                {
+                                    case 1:
+                                        <span>Yazılım</span>
+                                        ; break;
+                                    case 2:
+                                        <span>Donanım</span>
+                                        ; break;
+                                    case 3:
+                                        <span>İşe Alım</span>
+                                        ; break;
+                                    default:
+                                        <span>-</span>
+                                        ; break;
+                                }
+                            </td>
+                            <td>
+                                @if (user.IsActive==true)
+                                {
+                                    <span class="text-success"><i class="fa fa-check"></i> Aktif</span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger"><i class="fa fa-times"></i> Pasif</span>
+                                }
+                            </td>
+                            <td>@user.CreatedAt</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@user.UserId" class="btn btn-info btn-sm text-white"><i class="fa fa-edit"></i> Düzenle</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
