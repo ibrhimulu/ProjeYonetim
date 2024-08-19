@@ -19,7 +19,7 @@ namespace herkesuyurkenkodlama.Models
 
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "Şifre gerekli.")]
+        [Required(ErrorMessage = "Şifre gereklidir.")]
         [MinLength(6, ErrorMessage = "Şifre en az 6 karakterden oluşmalıdır.")]
         [MaxLength(15, ErrorMessage = "Şifre en fazla 15 karakterden oluşmalıdır.")]
         [Compare(nameof(Password), ErrorMessage = "Şifreler eşleşmiyor.")]

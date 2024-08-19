@@ -9,6 +9,8 @@ namespace ProjeYonetim
         public AutoMapperConfig()
         {
             CreateMap<User, UserViewModel>().ReverseMap();
+            CreateMap<User, CreateUserModel>().ReverseMap();
+
             CreateMap<Project, ProjectViewModel>().ReverseMap();
         }
     }
