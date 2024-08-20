@@ -88,6 +88,55 @@ namespace ProjeYonetim.Controllers
             return View(model);
         }
 
+        public IActionResult Edit(int id)
+        {
+            User user = _context.Users.Find(id);
+
+            EditUserModel model = _mapper.Map<EditUserModel>(user);
+
+            PopulateDepartmentsAndSubDepartments();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, EditUserModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (_context.Users.Any(x => x.Username.ToLower() == model.Username.ToLower() && x.UserId != id))
+                {
+                    ModelState.AddModelError(nameof(model.Username), "Bu kullanıcı adı zaten kullanılıyor.");
+                    PopulateDepartmentsAndSubDepartments(); // Hata durumunda departmanları yeniden yükle
+                    return View(model);
+                }
+
+                // Veritabanından mevcut kullanıcıyı bul
+                User user = _context.Users.Find(id);
+
+                // CreatedAt ve ProfileImagePath değerlerini sakla
+                var existingCreatedAt = user.CreatedAt;
+                var existingProfileImagePath = user.ProfileImagePath;
+
+                // Model verilerini kullanıcıya map'le
+                _mapper.Map(model, user);
+
+                // Eski CreatedAt ve ProfileImagePath değerlerini geri yükle
+                user.CreatedAt = existingCreatedAt;
+                user.ProfileImagePath = existingProfileImagePath;
+
+                // Değişiklikleri kaydet
+                _context.SaveChanges();
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            PopulateDepartmentsAndSubDepartments(); // Validasyon hatası durumunda departmanları yeniden yükle
+            return View(model);
+        }
+
+
+
         // Departman ve Alt Departman listelerini doldurmak için bir yardımcı metot
         private void PopulateDepartmentsAndSubDepartments()
         {

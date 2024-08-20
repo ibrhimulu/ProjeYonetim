@@ -10,6 +10,7 @@ namespace ProjeYonetim
         {
             CreateMap<User, UserViewModel>().ReverseMap();
             CreateMap<User, CreateUserModel>().ReverseMap();
+            CreateMap<User, EditUserModel>().ReverseMap();
 
             CreateMap<Project, ProjectViewModel>().ReverseMap();
         }
