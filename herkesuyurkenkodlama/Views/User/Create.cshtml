@@ -24,16 +24,31 @@
                 <!-- Şifre -->
                 <div class="form-group mb-3">
                     <label asp-for="Password" class="form-label">Şifre</label>
-                    <input asp-for="Password" type="password" class="form-control" placeholder="******" />
+                    <div class="input-group">
+                        <input asp-for="Password" type="password" class="form-control" placeholder="$ifRé63!" id="password-field" />
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-eye" id="toggle-password"></i>
+                            </span>
+                        </div>
+                    </div>
                     <span asp-validation-for="Password" class="text-danger small"></span>
                 </div>
 
                 <!-- Şifre Tekrar -->
                 <div class="form-group mb-3">
                     <label asp-for="RePassword" class="form-label">Şifre Tekrar</label>
-                    <input asp-for="RePassword" type="password" class="form-control" placeholder="******" />
+                    <div class="input-group">
+                        <input asp-for="RePassword" type="password" class="form-control" placeholder="$ifRé63!" id="repassword-field" />
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-eye" id="toggle-repassword"></i>
+                            </span>
+                        </div>
+                    </div>
                     <span asp-validation-for="RePassword" class="text-danger small"></span>
                 </div>
+
 
                 <!-- Rol -->
                 <div class="form-group mb-3">
@@ -92,3 +107,18 @@
         </div>
     </div>
 </div>
+<script>
+    document.getElementById('toggle-password').addEventListener('click', function () {
+        const passwordField = document.getElementById('password-field');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+    });
+
+    document.getElementById('toggle-repassword').addEventListener('click', function () {
+        const repasswordField = document.getElementById('repassword-field');
+        const type = repasswordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        repasswordField.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+    });
+</script>

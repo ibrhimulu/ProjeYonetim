@@ -157,8 +157,8 @@ namespace herkesuyurkenkodlama.Controllers
                 
                 user.NameSurname = namesurname;
                 _context.SaveChanges();
-
-                return RedirectToAction(nameof(Profile));
+                ViewData["result"] = "NameSurnameChanged";
+               
             }
 
             ProfileInfoLoader();
@@ -239,8 +239,8 @@ namespace herkesuyurkenkodlama.Controllers
 
                 user.ProfileImagePath = filePath;
                 _context.SaveChanges();
-
-                return RedirectToAction(nameof(Profile));
+                ViewData["result"] = "ProfileImageChanged";
+                
             }
 
             ProfileInfoLoader();

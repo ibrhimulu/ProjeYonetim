@@ -17,20 +17,28 @@
 
     <div class="col-6">
         <form method="post" asp-action="ProfileChangeImage" enctype="multipart/form-data">
-            <div class="text-center mb-1">
-                <!-- src özelliği artık tam dosya yolunu alacak -->
+            <div class="text-center mb-1">                
                 <img src="~/@ViewData["ProfileImage"]?t=@DateTime.Now.Ticks" style="width:11rem; height:13rem; border-radius:50%;" class="img-thumbnail" />
-
             </div>
 
             <div class="form-group mb-3">
-                <label class="form-label small">Profil Resmi<span class="badge bg-danger" style="margin-left: 0.2rem;">Gerekli</span></label>
+                <label class="form-label small">
+                    Profil Resmi
+                    <span class="badge bg-danger" style="margin-left: 0.2rem;">Gerekli</span>
+                </label>
                 <input type="file" name="file" class="form-control" accept=".jpg" />
                 <span class="text-secondary small"><i class="fas fa-info-circle me-2"></i>Sadece jpg dosyalar</span>
+                @if (ViewData["result"] != null && ViewData["result"] == "ProfileImageChanged")
+                {
+                    <span class="text-success small d-block mt-2">Fotoğrafınız güncellendi.</span>
+                }
                 <div class="text-center mt-3">
-                    <button class="btn btn-secondary" type="submit"><i class="fa-solid fa-floppy-disk me-2"></i>Kaydet</button>
+                    <button class="btn btn-secondary" type="submit">
+                        <i class="fa-solid fa-floppy-disk me-2"></i>Kaydet
+                    </button>
                 </div>
             </div>
+
         </form>
     </div>
 
@@ -52,6 +60,10 @@
                     <input name="namesurname" type="text" class="form-control" placeholder="Ad Soyad" value="@ViewData["NameSurname"]">
                     <button class="btn btn-secondary" type="submit"><i class="fa-solid fa-floppy-disk me-2"></i>Kaydet</button>
                 </div>
+                @if (ViewData["result"] != null && ViewData["result"] == "NameSurnameChanged")
+                {
+                    <span class="text-success small">Adınız güncellendi.</span>
+                }
             </div>
         </form>
 
@@ -59,7 +71,7 @@
             <div class="form-group">
                 <label class="form-label">Yeni Şifre<span class="badge bg-danger" style="margin-left: 0.2rem;">Gerekli</span></label>
                 <div class="input-group">
-                    <input name="password" type="password" class="form-control" id="password" placeholder="$ifR3!">
+                    <input name="password" type="password" class="form-control" id="password" placeholder="$ifRé63!">
                     <div class="input-group-append">
                         <span class="input-group-text">
                             <i class="fa fa-eye" id="togglePassword" style="cursor: pointer;"></i>

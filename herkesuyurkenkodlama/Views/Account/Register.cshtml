@@ -137,6 +137,7 @@
                                 <input type="text" asp-for="Username" class="form-control" id="username" name="username" placeholder="Kullanıcı adınızı girin">
                                 <span asp-validation-for="Username" class="text-danger"></span>
                             </div>
+                            <!-- Şifre Alanı -->
                             <div class="mb-3">
                                 <label class="form-label" for="password">
                                     <i class="fas fa-lock"></i> Şifre
@@ -144,9 +145,9 @@
                                 <div class="input-group">
                                     <input type="password" asp-for="Password" class="form-control" id="password" name="password" placeholder="Şifrenizi girin">
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
+                                        <span class="input-group-text" onclick="togglePassword('password', 'toggleEye')">
+                                            <i class="fas fa-eye" id="toggleEye"></i>
+                                        </span>
                                     </div>
                                 </div>
                                 <span asp-validation-for="Password" class="text-danger"></span>
@@ -158,15 +159,16 @@
                                     <i class="fas fa-lock"></i> Şifreyi Doğrula
                                 </label>
                                 <div class="input-group">
-                                    <input type="password" asp-for="RePassword" class="form-control" id="RePassword" name="RePassword" placeholder="Şifrenizi tekrar girin">
+                                    <input type="password" asp-for="RePassword" class="form-control" id="rePassword" name="RePassword" placeholder="Şifrenizi tekrar girin">
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="button" id="toggleRePassword">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
+                                        <span class="input-group-text" onclick="togglePassword('rePassword', 'toggleReEye')">
+                                            <i class="fas fa-eye" id="toggleReEye"></i>
+                                        </span>
                                     </div>
                                 </div>
                                 <span asp-validation-for="RePassword" class="text-danger"></span>
-                            </div>
+                            </div>                        
+
                             <button type="submit" class="btn btn-primary w-100">Üye Ol</button>
                         </form>
 
@@ -185,39 +187,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-
+  
     <script>
-        // Şifre alanı için
-        document.getElementById('togglePassword').addEventListener('click', function (e) {
-            const passwordInput = document.getElementById('password');
-            const icon = e.currentTarget.querySelector('i');
-
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
+        function togglePassword(passwordFieldId, toggleEyeId) {
+            var passwordField = document.getElementById(passwordFieldId);
+            var toggleEye = document.getElementById(toggleEyeId);
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                toggleEye.classList.remove("fa-eye");
+                toggleEye.classList.add("fa-eye-slash");
             } else {
-                passwordInput.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
+                passwordField.type = "password";
+                toggleEye.classList.remove("fa-eye-slash");
+                toggleEye.classList.add("fa-eye");
             }
-        });
-
-        // Şifreyi Doğrula alanı için
-        document.getElementById('toggleRePassword').addEventListener('click', function (e) {
-            const passwordInput = document.getElementById('RePassword');
-            const icon = e.currentTarget.querySelector('i');
-
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        });
+        }
     </script>
 
 
