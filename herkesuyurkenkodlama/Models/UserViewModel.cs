@@ -23,7 +23,9 @@ namespace herkesuyurkenkodlama.Models
         [RegularExpression(@"^[a-zA-ZğüşöçıĞÜŞÖÇİ]+$", ErrorMessage = "Kullanıcı adı yalnızca harflerden oluşmalıdır.")]
         public string Username { get; set; }
         public string? NameSurname { get; set; }
-        public int RoleId { get; set; }
+
+        [Required(ErrorMessage = "Bir rol seçiniz.")]
+        public int? RoleId { get; set; }
         public DateTime? CreatedAt { get; set; }
         public int? DepartmentId { get; set; }
         public int? SubDepartmentId { get; set; }
