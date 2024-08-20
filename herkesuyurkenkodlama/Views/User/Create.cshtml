@@ -1,18 +1,14 @@
 ﻿@model CreateUserModel
-@* @{
-    ViewData["Title"] = "Kullanıcı Oluştur";
-} *@
 
 <div class="row">
     <div class="col-4 offset-4">
-        @* <h1 class="display-4 border-bottom text-center pb-2">@ViewData["Title"]</h1> *@
     </div>
 </div>
 
 <div class="row">
     <div class="col-4 offset-4">
         <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger small"></div> @* hata mesajı *@
+            <div asp-validation-summary="ModelOnly" class="text-danger small"></div>
 
             <div class="form-group mb-3">
                 <label asp-for="NameSurname" class="form-label">Ad Soyad</label>
@@ -59,19 +55,13 @@
                 <span asp-validation-for="DepartmentId" class="text-danger small"></span>
             </div>
 
-
             <div class="form-group mb-3">
                 <label asp-for="SubDepartmentId" class="form-label">Alt Departman</label>
-                <select asp-for="SubDepartmentId" class="form-select">
+                <select asp-for="SubDepartmentId" class="form-select" asp-items="ViewBag.SubDepartments">
                     <option value="">Lütfen Seçin</option>
-                    @foreach (var subDepartment in ViewBag.SubDepartments as List<SelectListItem>)
-                    {
-                        <option value="@subDepartment.Value">@subDepartment.Text</option>
-                    }
                 </select>
                 <span asp-validation-for="SubDepartmentId" class="text-danger small"></span>
-            </div>         
-
+            </div>
 
             <div class="form-group mb-3">
                 <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save me-2"></i>Kaydet</button>

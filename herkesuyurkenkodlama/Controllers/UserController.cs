@@ -31,60 +31,83 @@ namespace ProjeYonetim.Controllers
 
         public IActionResult Create()
         {
-           
+            // Departman ve Alt Departmanları çekip ViewBag'e yükle
             var departments = _context.Mdepartments
-                                      .Select(d => new SelectListItem
-                                      {
-                                          Value = d.DepartmentId.ToString(),
-                                          Text = d.DepartmanName
-                                      })
-                                      .ToList();
+                                       .Select(d => new SelectListItem
+                                       {
+                                           Value = d.DepartmentId.ToString(),
+                                           Text = d.DepartmanName
+                                       })
+                                       .ToList();
 
-            
             var subDepartments = _context.Sdepartments
-                                         .Select(sd => new SelectListItem
-                                         {
-                                             Value = sd.SubDepartmentId.ToString(),
-                                             Text = sd.SubDepartmentName
-                                         })
-                                         .ToList();
+                                          .Select(sd => new SelectListItem
+                                          {
+                                              Value = sd.SubDepartmentId.ToString(),
+                                              Text = sd.SubDepartmentName
+                                          })
+                                          .ToList();
 
-            // Pass the lists to the view
             ViewBag.Departments = departments;
             ViewBag.SubDepartments = subDepartments;
 
             return View();
         }
 
-
-
         [HttpPost]
         public IActionResult Create(CreateUserModel model)
         {
-
             if (ModelState.IsValid)
             {
-
+                // Kullanıcı adının benzersizliğini kontrol et
                 if (_context.Users.Any(x => x.Username.ToLower() == model.Username.ToLower()))
                 {
                     ModelState.AddModelError(nameof(model.Username), "Bu kullanıcı adı zaten kullanılıyor.");
+
+                    // Hata durumunda departman ve alt departman listelerini yeniden yükleyin
+                    PopulateDepartmentsAndSubDepartments();
                     return View(model);
                 }
 
+                // Kullanıcı modelini User nesnesine dönüştür ve şifreyi hashle
                 User user = _mapper.Map<User>(model);
                 string hashedPassword = DoMD5HashedString(model.Password);
                 user.Password = hashedPassword;
                 user.CreatedAt = DateTime.Now;
                 user.ProfileImagePath = "uploads/no-image.jpg";
 
+                // Kullanıcıyı veritabanına ekle
                 _context.Users.Add(user);
                 _context.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
             }
 
+            // Validasyon hatası durumunda departman ve alt departman listelerini yeniden yükleyin
+            PopulateDepartmentsAndSubDepartments();
             return View(model);
         }
+
+        // Departman ve Alt Departman listelerini doldurmak için bir yardımcı metot
+        private void PopulateDepartmentsAndSubDepartments()
+        {
+            ViewBag.Departments = _context.Mdepartments
+                                          .Select(d => new SelectListItem
+                                          {
+                                              Value = d.DepartmentId.ToString(),
+                                              Text = d.DepartmanName
+                                          })
+                                          .ToList();
+
+            ViewBag.SubDepartments = _context.Sdepartments
+                                             .Select(sd => new SelectListItem
+                                             {
+                                                 Value = sd.SubDepartmentId.ToString(),
+                                                 Text = sd.SubDepartmentName
+                                             })
+                                             .ToList();
+        }
+
         private string DoMD5HashedString(string s)
         {
             string md5Salt = _configuration.GetValue<string>("AppSettings:MD5Salt");
