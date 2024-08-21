@@ -39,7 +39,6 @@ namespace herkesuyurkenkodlama.Controllers
 
                 User user = _context.Users.SingleOrDefault(x => x.Username.ToLower() == model.Username.ToLower()
                 && x.Password == hashedPassword);
-
                 if (user != null)
                 {
                     if (user.IsActive == false)
@@ -51,6 +50,7 @@ namespace herkesuyurkenkodlama.Controllers
                     List<Claim> claims = new List<Claim>();
                     claims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()));
                     claims.Add(new Claim(ClaimTypes.Name, user.NameSurname ?? string.Empty));
+
                     // Role tablosundan rol adını alıyoruz
                     var role = _context.Roles.FirstOrDefault(r => r.RoleId == user.RoleId);
                     if (role != null)
@@ -60,7 +60,10 @@ namespace herkesuyurkenkodlama.Controllers
 
                     claims.Add(new Claim("Username", user.Username));
 
-                    ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme); /*yani "Cookie"*/
+                    // Profile image path ekleniyor
+                    claims.Add(new Claim("ProfileImagePath", user.ProfileImagePath ?? "uploads/no-image.jpg"));
+
+                    ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                     ClaimsPrincipal principal = new ClaimsPrincipal(identity);
 
@@ -68,6 +71,7 @@ namespace herkesuyurkenkodlama.Controllers
 
                     return RedirectToAction("Index", "Home");
                 }
+
 
                 else
                 {

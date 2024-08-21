@@ -14,33 +14,119 @@ body {
     z-index: 10000;
 }
 
-    .navbar .nav-link {
-        color: #fff;
-        margin-right: 15px;
-    }
+.navbar .nav-link {
+    color: #fff;
+    margin-right: 15px;
+}
 
-        .navbar .nav-link:hover {
-            color: #adb5bd;
-        }
+.navbar .nav-link:hover {
+    color: #adb5bd;
+}
 
-    .navbar .navbar-brand {
-        font-size: 1.5em;
-        font-weight: bold;
-    }
+.navbar .navbar-brand {
+    font-size: 1.5em;
+    font-weight: bold;
+}
 
-    .navbar .nav-item.active .nav-link {
-        color: #007bff;
-        font-weight: bold;
-    }
+.navbar .nav-item.active .nav-link {
+    color: #007bff;
+    font-weight: bold;
+}
 
-    .navbar .nav-link.text-light {
-        color: #fff;
-        margin-right: 15px;
-    }
+.navbar .nav-link.text-light {
+    color: #fff;
+    margin-right: 15px;
+}
 
-        .navbar .nav-link.text-light:hover {
-            color: #adb5bd;
-        }
+.navbar .nav-link.text-light:hover {
+    color: #adb5bd;
+}
+
+/* Kullanýcý dropdown menüsü özel stiller */
+.navbar .user-dropdown .dropdown-menu {
+    background-color: #343a40; /* Navbar arka plan rengiyle uyumlu */
+    border: none;
+    padding: 0;
+}
+
+.navbar .user-dropdown .dropdown-item {
+    color: #ffffff;
+}
+
+.navbar .user-dropdown .dropdown-item:hover {
+    background-color: #495057; /* Hover durumu için renk */
+}
+
+.navbar .user-dropdown .dropdown-header {
+    background-color: #343a40;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.navbar .user-dropdown .dropdown-header img {
+    height: 50px;
+    width: 50px;
+    margin-right: 15px;
+    border-radius: 50%;
+}
+
+.custom-dropdown {
+    width: 200px; /* Daha dar bir geniþlik */
+    padding: 0;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+    background-color: #343a40;
+}
+
+.custom-dropdown .dropdown-header {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+}
+
+.custom-dropdown .dropdown-header img {
+    height: 30px;
+    width: 30px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+.custom-dropdown .dropdown-header div {
+    line-height: 1.2;
+}
+
+.custom-dropdown .dropdown-header strong {
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.custom-dropdown .dropdown-header small {
+    color: #dcdcdc;
+}
+
+.custom-dropdown .dropdown-item {
+    padding: 10px 15px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+}
+
+.custom-dropdown .dropdown-item i {
+    margin-right: 10px;
+}
+
+.custom-dropdown .dropdown-item:hover {
+    background-color: #495057;
+    color: #ffffff;
+}
+
+.custom-dropdown .dropdown-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 0;
+}
 
 /* Sidebar Styles */
 .sidebar {
@@ -73,17 +159,15 @@ body {
     font-size: 1.1em;
 }
 
-    .sidebar .nav-link:hover {
-        background-color: #e9ecef;
-        color: #343a40;
-        border-radius: 5px;
-    }
+.sidebar .nav-link:hover {
+    background-color: #e9ecef;
+    color: #343a40;
+    border-radius: 5px;
+}
 
-    .sidebar .nav-link .fa {
-        margin-right: 10px;
-    }
-
-
+.sidebar .nav-link .fa {
+    margin-right: 10px;
+}
 
 /* Main Content */
 .main-content {
@@ -99,14 +183,14 @@ body {
     color: #fff;
 }
 
-    .welcome-section h1 {
-        font-size: 2.5em;
-        margin-bottom: 20px;
-    }
+.welcome-section h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
 
-    .welcome-section p {
-        font-size: 1.25em;
-    }
+.welcome-section p {
+    font-size: 1.25em;
+}
 
 /* Features Section */
 .features-section .card {
@@ -114,13 +198,13 @@ body {
     transition: transform 0.2s ease-in-out;
 }
 
-    .features-section .card:hover {
-        transform: scale(1.05);
-    }
+.features-section .card:hover {
+    transform: scale(1.05);
+}
 
-    .features-section .card .card-body {
-        padding: 30px;
-    }
+.features-section .card .card-body {
+    padding: 30px;
+}
 
 .features-section .card-title {
     font-size: 1.25em;
@@ -142,14 +226,53 @@ footer {
     z-index: 1; /* Ensure footer is below sidebar */
 }
 
-
+/* Badge Styles */
 .badge {
     display: inline-block;
     width: 70px; /* Ýstediðiniz geniþliði buradan ayarlayabilirsiniz */
     text-align: center;
     padding: 5px;
-    color: white  !important; /* Yazý rengini beyaz yapar */
+    color: white !important; /* Yazý rengini beyaz yapar */
     border-radius: 5px;
 }
 
-    
+/* Responsive Styles */
+@media (max-width: 767px) {
+    .navbar {
+        position: relative; /* Navbar'ýn konumunu ayarla */
+    }
+
+    .navbar .navbar-collapse {
+        display: block !important; /* Menü çökertme durumunu ayarla */
+    }
+
+    .navbar .nav-link {
+        display: block; /* Menü öðelerini blok olarak göster */
+        margin: 5px 0; /* Menü öðeleri arasýnda boþluk býrak */
+    }
+
+    .user-dropdown {
+        display: block; /* Profil dropdown'ýný gösterir */
+    }
+
+    .navbar .user-dropdown .dropdown-menu {
+        position: static; /* Dropdown menüsünü mobilde açýlýr hale getirir */
+        float: none;
+        width: 100%; /* Dropdown menüsünü geniþletir */
+        box-shadow: none; /* Gölgeyi kaldýr */
+    }
+
+    .user-dropdown img {
+        height: 25px;
+        width: 25px;
+    }
+
+    .sidebar {
+        display: none; /* Küçük ekranlarda sidebar'ý gizle */
+    }
+
+    .main-content {
+        margin-left: 0; /* Ana içeriðin sol marginini sýfýrla */
+        margin-top: 56px; /* Navbar yüksekliði kadar margin býrak */
+    }
+}

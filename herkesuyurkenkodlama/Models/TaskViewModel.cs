@@ -1,6 +1,6 @@
-﻿namespace herkesuyurkenkodlama.Models
-{
-    public class TaskViewModel
-    {
-    }
-}
+﻿//namespace herkesuyurkenkodlama.Models
+//{
+//    public class TaskViewModel
+//    {
+//    }
+//}

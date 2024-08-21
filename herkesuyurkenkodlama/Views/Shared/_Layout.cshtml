@@ -8,7 +8,6 @@
     <link href="~/lib/toastrjs/toastr.min.css" rel="stylesheet" />
     <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">    
 </head>
 <body>
     <!-- Navbar -->
@@ -17,34 +16,46 @@
             <img src="~/uploads/projelogo.png" alt="Logo" style="height: 35px; width: 35px; margin-right: 10px; filter: drop-shadow(0 0 3px white);">
             ManageMint
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-
-                @if(User.Identity.IsAuthenticated)
+                @if (User.Identity.IsAuthenticated)
                 {
-                    <li class="nav-item ms-auto">
-                        <a class="nav-link" style=" filter: drop-shadow(0 0 5px black);" asp-area="" asp-controller="Account" asp-action="Profile">
-                            <i class="fa-solid fa-user me-1"></i> @User.FindFirst("Username").Value
+                    <li class="nav-item dropdown user-dropdown ms-auto">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @{
+                                var profileImagePath = User.FindFirst("ProfileImagePath")?.Value ?? "uploads/no-image.jpg";
+                                var timestamp = DateTime.Now.Ticks; // Her yüklemede farklı bir değer üretir
+                            }
+                            <img src="~/@profileImagePath?v=@timestamp" class="rounded-circle" style="height: 30px; width: 30px; margin-right: 5px;">
                         </a>
+
+                        <div class="dropdown-menu dropdown-menu-right custom-dropdown" aria-labelledby="userDropdown">
+                            <div class="dropdown-header bg-dark text-white">
+                                <img src="~/@profileImagePath?v=@timestamp" alt="User Image" class="rounded-circle" style="height: 40px; width: 40px;">
+                                <div>
+                                    <strong>@User.FindFirst("Username").Value</strong><br>
+                                </div>
+                            </div>
+                            <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">
+                                <i class="fa-solid fa-user"></i> Profil
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i> Çıkış Yap
+                            </a>
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" style=" filter: drop-shadow(0 0 5px black);" asp-area="" asp-controller="Account" asp-action="Logout">
-                            <i class="fa-solid fa-arrow-right-from-bracket me-1"></i> Çıkış Yap
-                        </a>
-                    </li>
-                }                       
+
+                }
             </ul>
         </div>
     </nav>
 
-    <!-- Sidebar -->
+    <!-- Sidebar ve Main Content -->
     <div class="d-flex">
         <nav class="sidebar bg-light">
             <h2 class="sidebar-title">Menü</h2>
-            <ul class="nav flex-column">                
+            <ul class="nav flex-column">
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i> Ana Sayfa</a>
                 </li>
@@ -73,10 +84,8 @@
                                 <a class="dropdown-item" asp-area="" asp-controller="Task" asp-action="Index"><i class="fa fa-tasks"></i> Görevler</a>
                             </div>
                         </li>
-
                     }
                 }
-                
             </ul>
         </nav>
 
