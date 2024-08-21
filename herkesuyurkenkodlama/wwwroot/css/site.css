@@ -141,3 +141,15 @@ footer {
     width: 100%;
     z-index: 1; /* Ensure footer is below sidebar */
 }
+
+
+.badge {
+    display: inline-block;
+    width: 70px; /* Ýstediðiniz geniþliði buradan ayarlayabilirsiniz */
+    text-align: center;
+    padding: 5px;
+    color: white  !important; /* Yazý rengini beyaz yapar */
+    border-radius: 5px;
+}
+
+    
