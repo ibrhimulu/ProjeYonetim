@@ -54,7 +54,7 @@
                 <div class="form-group mb-3">
                     <label asp-for="RoleId" class="form-label">Rol</label>
                     <div class="input-group">
-                        <select asp-for="RoleId" class="form-select">
+                        <select asp-for="RoleId" class="form-select" style="width: 91%">
                             <option value="">Lütfen Seçin</option>
                             <option value="1">User</option>
                             <option value="2">Admin</option>
@@ -63,7 +63,9 @@
                             <option value="10">Tester</option>
                         </select>
                         <div class="input-group-append">
-                            <span class="input-group-text"><i class="fa-solid fa-user-tag"></i></span>
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-user-tag fa-fw"></i>
+                            </span>
                         </div>
                     </div>
                     <span asp-validation-for="RoleId" class="text-danger small"></span>
@@ -71,13 +73,15 @@
 
                 <!-- Departman -->
                 <div class="form-group mb-3">
-                    <label asp-for="DepartmentId" class="form-label">Departman</label>
+                    <label asp-for="DepartmentId" class="form-label">Müdürlük</label>
                     <div class="input-group">
-                        <select asp-for="DepartmentId" class="form-select" asp-items="ViewBag.Departments">
+                        <select asp-for="DepartmentId" class="form-select" style="width: 91%" asp-items="ViewBag.Departments">
                             <option value="">Lütfen Seçin</option>
                         </select>
                         <div class="input-group-append">
-                            <span class="input-group-text"><i class="fa-solid fa-building"></i></span>
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-building fa-fw"></i>
+                            </span>
                         </div>
                     </div>
                     <span asp-validation-for="DepartmentId" class="text-danger small"></span>
@@ -85,13 +89,15 @@
 
                 <!-- Alt Departman -->
                 <div class="form-group mb-3">
-                    <label asp-for="SubDepartmentId" class="form-label">Alt Departman</label>
+                    <label asp-for="SubDepartmentId" class="form-label">Şeflik</label>
                     <div class="input-group">
-                        <select asp-for="SubDepartmentId" class="form-select" asp-items="ViewBag.SubDepartments">
+                        <select asp-for="SubDepartmentId" class="form-select" style="width: 91%" asp-items="ViewBag.SubDepartments">
                             <option value="">Lütfen Seçin</option>
                         </select>
                         <div class="input-group-append">
-                            <span class="input-group-text"><i class="fa-solid fa-sitemap"></i></span>
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-sitemap fa-fw"></i>
+                            </span>
                         </div>
                     </div>
                     <span asp-validation-for="SubDepartmentId" class="text-danger small"></span>

@@ -7,12 +7,12 @@ namespace herkesuyurkenkodlama.Models
     {
         public Status()
         {
-            Tasks = new HashSet<Task>();
+            Tasklars = new HashSet<Tasklar>();
         }
 
         public int StatusId { get; set; }
         public string StatusName { get; set; } = null!;
 
-        public virtual ICollection<Task> Tasks { get; set; }
+        public virtual ICollection<Tasklar> Tasklars { get; set; }
     }
 }

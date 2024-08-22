@@ -16,7 +16,7 @@ namespace herkesuyurkenkodlama.Models
 
         public virtual Mdepartment? Department { get; set; }
         public virtual Sdepartment? SubDepartment { get; set; }
-        public virtual Task Task { get; set; } = null!;
+        public virtual Tasklar Task { get; set; } = null!;
         public virtual User User { get; set; } = null!;
     }
 }

@@ -9,7 +9,7 @@ namespace herkesuyurkenkodlama.Models
         {
             Comments = new HashSet<Comment>();
             Projects = new HashSet<Project>();
-            Tasks = new HashSet<Task>();
+            Tasklars = new HashSet<Tasklar>();
             Users = new HashSet<User>();
         }
 
@@ -21,7 +21,7 @@ namespace herkesuyurkenkodlama.Models
         public virtual Mdepartment? Department { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Project> Projects { get; set; }
-        public virtual ICollection<Task> Tasks { get; set; }
+        public virtual ICollection<Tasklar> Tasklars { get; set; }
         public virtual ICollection<User> Users { get; set; }
     }
 }

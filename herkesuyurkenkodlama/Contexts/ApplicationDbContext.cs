@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using herkesuyurkenkodlama.Models;
-using Task = herkesuyurkenkodlama.Models.Task;
 
 namespace herkesuyurkenkodlama.Contexts
 {
@@ -24,7 +23,7 @@ namespace herkesuyurkenkodlama.Contexts
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<Sdepartment> Sdepartments { get; set; } = null!;
         public virtual DbSet<Status> Statuses { get; set; } = null!;
-        public virtual DbSet<Task> Tasks { get; set; } = null!;
+        public virtual DbSet<Tasklar> Tasklars { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -160,9 +159,12 @@ namespace herkesuyurkenkodlama.Contexts
                 entity.Property(e => e.StatusId).HasColumnName("StatusID");
             });
 
-            modelBuilder.Entity<Task>(entity =>
+            modelBuilder.Entity<Tasklar>(entity =>
             {
-                entity.ToTable("task");
+                entity.HasKey(e => e.TaskId)
+                    .HasName("PK_task");
+
+                entity.ToTable("tasklar");
 
                 entity.Property(e => e.TaskId).HasColumnName("TaskID");
 
@@ -183,30 +185,30 @@ namespace herkesuyurkenkodlama.Contexts
                 entity.Property(e => e.Title).HasMaxLength(100);
 
                 entity.HasOne(d => d.AssignedUser)
-                    .WithMany(p => p.Tasks)
+                    .WithMany(p => p.Tasklars)
                     .HasForeignKey(d => d.AssignedUserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_task_user");
 
                 entity.HasOne(d => d.Department)
-                    .WithMany(p => p.Tasks)
+                    .WithMany(p => p.Tasklars)
                     .HasForeignKey(d => d.DepartmentId)
                     .HasConstraintName("FK_task_mdepartment");
 
                 entity.HasOne(d => d.Project)
-                    .WithMany(p => p.Tasks)
+                    .WithMany(p => p.Tasklars)
                     .HasForeignKey(d => d.ProjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_task_project");
 
                 entity.HasOne(d => d.Status)
-                    .WithMany(p => p.Tasks)
+                    .WithMany(p => p.Tasklars)
                     .HasForeignKey(d => d.StatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_task_status");
 
                 entity.HasOne(d => d.SubDepartment)
-                    .WithMany(p => p.Tasks)
+                    .WithMany(p => p.Tasklars)
                     .HasForeignKey(d => d.SubDepartmentId)
                     .HasConstraintName("FK_task_sdepartment");
             });

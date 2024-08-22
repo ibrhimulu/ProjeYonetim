@@ -7,7 +7,7 @@ namespace herkesuyurkenkodlama.Models
     {
         public Project()
         {
-            Tasks = new HashSet<Task>();
+            Tasklars = new HashSet<Tasklar>();
         }
 
         public int ProjectId { get; set; }
@@ -22,6 +22,6 @@ namespace herkesuyurkenkodlama.Models
         public virtual Mdepartment? Department { get; set; }
         public virtual User? OwnerUser { get; set; }
         public virtual Sdepartment? SubDepartment { get; set; }
-        public virtual ICollection<Task> Tasks { get; set; }
+        public virtual ICollection<Tasklar> Tasklars { get; set; }
     }
 }
