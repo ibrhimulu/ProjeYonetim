@@ -85,8 +85,6 @@ namespace herkesuyurkenkodlama.Contexts
                 entity.ToTable("mdepartment");
 
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
-
-                entity.Property(e => e.DepartmanName).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Project>(entity =>
@@ -127,9 +125,7 @@ namespace herkesuyurkenkodlama.Contexts
 
                 entity.Property(e => e.RoleId).HasColumnName("RoleID");
 
-                entity.Property(e => e.Rolename)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.Rolename).IsUnicode(false);
             });
 
             modelBuilder.Entity<Sdepartment>(entity =>
@@ -143,8 +139,6 @@ namespace herkesuyurkenkodlama.Contexts
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
 
                 entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
-
-                entity.Property(e => e.SubDepartmentName).HasMaxLength(50);
 
                 entity.HasOne(d => d.Department)
                     .WithMany(p => p.Sdepartments)
@@ -181,8 +175,6 @@ namespace herkesuyurkenkodlama.Contexts
                 entity.Property(e => e.StatusId).HasColumnName("StatusID");
 
                 entity.Property(e => e.SubDepartmentId).HasColumnName("SubDepartmentID");
-
-                entity.Property(e => e.Title).HasMaxLength(100);
 
                 entity.HasOne(d => d.AssignedUser)
                     .WithMany(p => p.Tasklars)

@@ -17,12 +17,13 @@
                 <thead class="table-light">
                     <tr>
                         <th>Görev Adı</th>
-                        <th>Proje</th>
+                        <th>Açıklama</th>
+                        <th>Proje</th>                        
                         <th>Kullanıcı</th>
                         <th>Müdürlük</th>
                         <th>Şeflik</th>
                         <th>Aktiflik</th>
-                        <th>Oluşturma Tarihi</th>
+                        <th>Oluş. Tarihi</th>
                         <th>Durum</th>
                         <th>İşlemler</th>
                     </tr>
@@ -31,7 +32,10 @@
                     @foreach (var tasklar in Model)
                     {
                         <tr>
-                            <td>@(tasklar.Title)</td>
+                            <td>@(tasklar.Title)</td>                           
+                            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                <span title="@tasklar.TaskDescription">@tasklar.TaskDescription</span>
+                            </td>
                             <td>@(tasklar.ProjectId)</td>
                             <td>@(tasklar.AssignedUserId)</td>
                             <td>
