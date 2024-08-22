@@ -1,17 +1,38 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using herkesuyurkenkodlama.Contexts;
+using herkesuyurkenkodlama.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace herkesuyurkenkodlama.Controllers
 {
     public class TeamController : Controller
     {
-        public IActionResult AdminIndex()
+        private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
+
+        public TeamController(ApplicationDbContext context, IMapper mapper)
         {
-            return View();
+            _context = context;
+            _mapper = mapper;
         }
-        
+               
         public IActionResult UserIndex()
         {
-            return View();
+            List<TeamViewModel> teams =
+               _context.Sdepartments.ToList()
+                   .Select(x => _mapper.Map<TeamViewModel>(x)).ToList();
+
+            return View(teams);
         }
+
+        public IActionResult AdminIndex()
+        {
+            List<TeamViewModel> teams =
+                _context.Sdepartments.ToList()
+                    .Select(x => _mapper.Map<TeamViewModel>(x)).ToList();
+
+            return View(teams);           
+        }
+
     }
 }

@@ -1,1 +1,62 @@
-﻿admmin takım
+﻿@model List<TeamViewModel>
+
+@{
+    ViewData["Title"] = "Projeler";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <div class="d-flex justify-content-between mb-3">
+        <a asp-action="Create" class="btn btn-primary btn-sm"><i class="fa fa-plus me-2 mr-1"></i>Yeni Proje</a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-striped table-bordered table-hover table-sm">
+                <thead class="table-light">
+                    <tr>
+                        <th>Şeflik Adı</th>
+                        <th>Müdürlük</th>
+                        <th>Aktiflik</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var team in Model)
+                    {
+                        <tr>
+                            <td>@team.SubDepartmentName</td>
+                            <td>
+                                @switch (team.DepartmentId)
+                                {
+                                    case 1:
+                                        <span>Bilgi İşlem Daire Başkanlığı</span>
+                                        ; break;
+                                    case 2:
+                                        <span>Garaj</span>
+                                        ; break;
+                                    case 3:
+                                        <span>İnsan Kaynakları</span>
+                                        ; break;
+                                    default:
+                                        <span>-</span>
+                                        ; break;
+                                }
+                            </td>
+                            <td>
+                                @if (team.IsActive == true)
+                                {
+                                    <span class="text-success"><i class="fa fa-check"></i> Aktif</span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger"><i class="fa fa-times"></i> Pasif</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
