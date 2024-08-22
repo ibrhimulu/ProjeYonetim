@@ -18,7 +18,7 @@
                     <tr>
                         <th>Proje Adı</th>
                         <th>Açıklama</th>
-                        <th>Bağlı Kullanıcı</th>
+                        <th>Kullanıcı</th>
                         <th>Müdürlük</th>
                         <th>Şeflik</th>
                         <th>Aktiflik</th>
@@ -31,7 +31,10 @@
                     {
                         <tr>
                             <td>@project.ProjectName</td>
-                            <td>@project.Description</td>
+                            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                <span title="@project.Description">@project.Description</span>
+                            </td>
+
                             <td>@project.OwnerUserId</td>
                             <td>
                                 @switch (project.DepartmentId)

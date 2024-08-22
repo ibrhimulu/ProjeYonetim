@@ -31,7 +31,8 @@
                     {
                         <tr>
                             <td>@user.Username</td>
-                            <td>@user.NameSurname</td>
+                            <td>@(string.IsNullOrEmpty(user.NameSurname) ? "-" : user.NameSurname)</td>
+
                             <td>
                                 @switch (user.RoleId)
                                 {
