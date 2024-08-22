@@ -4,7 +4,12 @@ namespace herkesuyurkenkodlama.Controllers
 {
     public class TeamController : Controller
     {
-        public IActionResult Index()
+        public IActionResult AdminIndex()
+        {
+            return View();
+        }
+        
+        public IActionResult UserIndex()
         {
             return View();
         }
