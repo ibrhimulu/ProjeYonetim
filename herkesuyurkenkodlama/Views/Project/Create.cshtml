@@ -21,22 +21,6 @@
                     <span asp-validation-for="Description" class="text-danger small"></span>
                 </div>
 
-                <!-- Kullanıcı -->
-                <div class="form-group mb-3">
-                    <label asp-for="OwnerUserId" class="form-label">Kullanıcı</label>
-                    <div class="input-group">
-                        <select asp-for="OwnerUserId" class="form-select" style="width: 91%">
-                            <option value="">Lütfen Seçin</option>
-                        </select>
-                        <div class="input-group-append">
-                            <span class="input-group-text">
-                                <i class="fa-solid fa-user fa-fw"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <span asp-validation-for="OwnerUserId" class="text-danger small"></span>
-                </div>
-
                 <!-- Müdürlük -->
                 <div class="form-group mb-3">
                     <label asp-for="DepartmentId" class="form-label">Müdürlük</label>
@@ -68,6 +52,23 @@
                     </div>
                     <span asp-validation-for="SubDepartmentId" class="text-danger small"></span>
                 </div>
+
+                <!-- Kullanıcı -->
+                <div class="form-group mb-3">
+                    <label asp-for="OwnerUserId" class="form-label">Kullanıcı</label>
+                    <div class="input-group">
+                        <select asp-for="OwnerUserId" class="form-select" style="width: 91%">
+                            <option value="">Lütfen Seçin</option>
+                        </select>
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-user fa-fw"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="OwnerUserId" class="text-danger small"></span>
+                </div>
+
 
                 <!-- Kaydet Butonu -->
                 <div class="form-group mb-3 text-center">

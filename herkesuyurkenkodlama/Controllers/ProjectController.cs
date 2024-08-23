@@ -28,8 +28,16 @@ namespace herkesuyurkenkodlama.Controllers
         {
             List<ProjectViewModel> projects =
                 _context.Projects.ToList()
-                    .Select(x => _mapper.Map<ProjectViewModel>(x)).ToList();            
-            
+                    .Select(x => _mapper.Map<ProjectViewModel>(x)).ToList();
+
+            ViewBag.Users = _context.Users
+       .Select(u => new SelectListItem
+       {
+           Value = u.UserId.ToString(),
+           Text = u.Username
+       })
+       .ToList();
+
             return View(projects);
         }
 
@@ -89,6 +97,18 @@ namespace herkesuyurkenkodlama.Controllers
             PopulateDepartmentsAndSubDepartments();
             return View(model);
         }
+
+        //public IActionResult Edit(int id)
+        //{
+        //    User user = _context.Users.Find(id);
+
+        //    EditUserModel model = _mapper.Map<EditUserModel>(user);
+
+        //    PopulateDepartmentsAndSubDepartments();
+
+        //    return View(model);
+        //}
+
 
         // Departman ve Alt Departman listelerini doldurmak için bir yardımcı metot
         private void PopulateDepartmentsAndSubDepartments()

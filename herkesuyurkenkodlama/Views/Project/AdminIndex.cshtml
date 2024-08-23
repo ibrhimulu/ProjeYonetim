@@ -33,9 +33,12 @@
                             <td>@project.ProjectName</td>
                             <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                 <span title="@project.Description">@project.Description</span>
-                            </td>
-
-                            <td>@project.OwnerUserId</td>
+                            </td>                            
+                            <td>
+                                    @((ViewBag.Users as List<SelectListItem>)
+                                        .FirstOrDefault(u => u.Value == project.OwnerUserId.ToString())?.Text ?? "-"
+                                        )
+                            </td>                            
                             <td>
                                 @switch (project.DepartmentId)
                                 {
