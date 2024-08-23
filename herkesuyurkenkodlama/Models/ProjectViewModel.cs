@@ -24,7 +24,7 @@
         public string ProjectName { get; set; } = null!;
         public string? Description { get; set; }
         public int? OwnerUserId { get; set; }
-        public bool? IsActive { get; set; }
+        public bool IsActive { get; set; }
         public int? DepartmentId { get; set; }
         public int? SubDepartmentId { get; set; }
     }

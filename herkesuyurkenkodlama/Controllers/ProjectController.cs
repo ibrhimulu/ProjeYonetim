@@ -98,16 +98,50 @@ namespace herkesuyurkenkodlama.Controllers
             return View(model);
         }
 
-        //public IActionResult Edit(int id)
-        //{
-        //    User user = _context.Users.Find(id);
+        public IActionResult Edit(int id)
+        {
+            Project project = _context.Projects.Find(id);
 
-        //    EditUserModel model = _mapper.Map<EditUserModel>(user);
+            EditProjectModel model = _mapper.Map<EditProjectModel>(project);
 
-        //    PopulateDepartmentsAndSubDepartments();
+            PopulateDepartmentsAndSubDepartments();
 
-        //    return View(model);
-        //}
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, EditProjectModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (_context.Projects.Any(x => x.ProjectName.ToLower() == model.ProjectName.ToLower() && x.ProjectId != id))
+                {
+                    ModelState.AddModelError(nameof(model.ProjectName), "Bu kullanıcı adı zaten kullanılıyor.");
+                    PopulateDepartmentsAndSubDepartments(); // Hata durumunda departmanları yeniden yükle
+                    return View(model);
+                }
+
+                // Veritabanından mevcut kullanıcıyı bul
+                Project project = _context.Projects.Find(id);
+
+                // CreatedAt ve ProfileImagePath değerlerini sakla
+                var existingCreatedAt = project.CreatedAt;                
+
+                // Model verilerini kullanıcıya map'le
+                _mapper.Map(model, project);
+
+                // Eski CreatedAt ve ProfileImagePath değerlerini geri yükle
+                project.CreatedAt = existingCreatedAt;               
+
+                // Değişiklikleri kaydet
+                _context.SaveChanges();
+
+                return RedirectToAction(nameof(AdminIndex));
+            }
+
+            PopulateDepartmentsAndSubDepartments(); // Validasyon hatası durumunda departmanları yeniden yükle
+            return View(model);
+        }
 
 
         // Departman ve Alt Departman listelerini doldurmak için bir yardımcı metot
