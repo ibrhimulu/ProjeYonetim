@@ -19,6 +19,7 @@
                         <th>Şeflik Adı</th>
                         <th>Müdürlük</th>
                         <th>Aktiflik</th>
+                        <th>İşlemler</th> <!-- İşlemler sütunu eklendi -->
                     </tr>
                 </thead>
                 <tbody>
@@ -52,6 +53,9 @@
                                 {
                                     <span class="text-danger"><i class="fa fa-times"></i> Pasif</span>
                                 }
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@team.SubDepartmentId" class="btn btn-info btn-sm text-white"><i class="fa fa-edit"></i> Düzenle</a>                               
                             </td>
                         </tr>
                     }
