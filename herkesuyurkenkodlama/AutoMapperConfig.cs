@@ -23,6 +23,9 @@ namespace ProjeYonetim
             CreateMap<Sdepartment, CreateTeamModel>().ReverseMap();
             CreateMap<Sdepartment, EditTeamModel>().ReverseMap();
 
+            CreateMap<Mdepartment, HeadshipViewModel>().ReverseMap();
+            CreateMap<Mdepartment, CreateHeadshipModel>().ReverseMap();
+            CreateMap<Mdepartment, EditHeadshipModel>().ReverseMap();
 
 
         }
