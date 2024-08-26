@@ -68,7 +68,7 @@ namespace herkesuyurkenkodlama.Controllers
                 // Kullanıcı adının benzersizliğini kontrol et
                 if (_context.Sdepartments.Any(x => x.SubDepartmentName.ToLower() == model.SubDepartmentName.ToLower()))
                 {
-                    ModelState.AddModelError(nameof(model.SubDepartmentName), "Bu isimli takım zaten oluşturulmuş.");
+                    ModelState.AddModelError(nameof(model.SubDepartmentName), "Bu şeflik adı zaten oluşturulmuş.");
 
                     // Hata durumunda departman ve alt departman listelerini yeniden yükleyin
                     PopulateDepartmentsAndSubDepartments();
@@ -91,6 +91,58 @@ namespace herkesuyurkenkodlama.Controllers
             return View(model);
 
         }
+
+        public IActionResult Edit(int id)
+        {
+            // İlgili şefliği veritabanından bul
+            Sdepartment team = _context.Sdepartments.Find(id);
+
+            // Şefliği düzenleme modeline map'le
+            EditTeamModel model = _mapper.Map<EditTeamModel>(team);
+
+            // Departman ve alt departmanları doldur
+            PopulateDepartmentsAndSubDepartments();
+
+            // Modeli view'a gönder
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, EditTeamModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Aynı isimde başka bir şeflik olup olmadığını kontrol et
+                if (_context.Sdepartments.Any(x => x.SubDepartmentName.ToLower() == model.SubDepartmentName.ToLower() && x.SubDepartmentId != id))
+                {
+                    ModelState.AddModelError(nameof(model.SubDepartmentName), "Bu şeflik adı zaten kullanılıyor.");
+                    PopulateDepartmentsAndSubDepartments(); // Hata durumunda departmanları yeniden yükle
+                    return View(model);
+                }
+
+                // Veritabanından mevcut şefliği bul
+                Sdepartment team = _context.Sdepartments.Find(id);
+
+                // Şeflik ID'sinin değiştirilmesini önlemek için mevcut ID'yi sakla
+                var existingSubDepartmentId = team.SubDepartmentId;
+
+                // Model verilerini şefliğe map'le
+                _mapper.Map(model, team);
+
+                // Eski SubDepartmentId'yi geri yükle
+                team.SubDepartmentId = existingSubDepartmentId;
+
+                // Değişiklikleri kaydet
+                _context.SaveChanges();
+
+                // Admin index sayfasına yönlendir
+                return RedirectToAction(nameof(AdminIndex));
+            }
+
+            PopulateDepartmentsAndSubDepartments(); // Validasyon hatası durumunda departmanları yeniden yükle
+            return View(model);
+        }
+
 
         private void PopulateDepartmentsAndSubDepartments()
         {
