@@ -18,10 +18,11 @@
                     <tr>
                         <th>Görev Adı</th>
                         <th>Açıklama</th>
-                        <th>Proje</th>                        
+                        <th>Proje</th>                     
                         <th>Kullanıcı</th>
                         <th>Müdürlük</th>
                         <th>Şeflik</th>
+                        <th>Yorum</th>
                         <th>Aktiflik</th>
                         <th>Oluş. Tarihi</th>
                         <th>Durum</th>
@@ -52,6 +53,7 @@
                                 @((ViewBag.SubDepartments as List<SelectListItem>)
                                     .FirstOrDefault(sd => sd.Value == tasklar.SubDepartmentId.ToString())?.Text ?? "-")
                             </td>
+                            <td>@tasklar.TaskComment</td>
                             <td>
                                 @if (tasklar.IsActive)
                                 {

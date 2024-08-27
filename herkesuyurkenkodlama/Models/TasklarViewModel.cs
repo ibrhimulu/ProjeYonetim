@@ -12,6 +12,7 @@
         public int SubDepartmentId { get; set; }
         public int StatusId { get; set; }
         public string? TaskDescription { get; set; }
+        public string? TaskComment { get; set; }
     }
     public class CreateTasklarModel
     {
@@ -22,6 +23,7 @@
         public int SubDepartmentId { get; set; }
         public int StatusId { get; set; }
         public string? TaskDescription { get; set; }
+        public string? TaskComment { get; set; }
     }
     public class EditTasklarModel
     {
@@ -33,6 +35,7 @@
         public int SubDepartmentId { get; set; }
         public int StatusId { get; set; }
         public string? TaskDescription { get; set; }
+        public string? TaskComment { get; set; }
     }
 
 }
