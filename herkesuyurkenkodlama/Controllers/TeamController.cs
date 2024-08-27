@@ -32,8 +32,19 @@ namespace herkesuyurkenkodlama.Controllers
                 _context.Sdepartments.ToList()
                     .Select(x => _mapper.Map<TeamViewModel>(x)).ToList();
 
+            // Departmanlar için ViewBag oluşturun
+            ViewBag.Departments = _context.Mdepartments
+                .Select(d => new SelectListItem
+                {
+                    Value = d.DepartmentId.ToString(),
+                    Text = d.DepartmanName
+                })
+                .ToList();
+
             return View(teams);
         }
+
+
 
         public IActionResult Create()
         {

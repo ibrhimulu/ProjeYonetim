@@ -27,23 +27,11 @@
                     {
                         <tr>
                             <td>@team.SubDepartmentName</td>
-                            <td>
-                                @switch (team.DepartmentId)
-                                {
-                                    case 1:
-                                        <span>Bilgi İşlem Daire Başkanlığı</span>
-                                        ; break;
-                                    case 2:
-                                        <span>Garaj</span>
-                                        ; break;
-                                    case 3:
-                                        <span>İnsan Kaynakları</span>
-                                        ; break;
-                                    default:
-                                        <span>-</span>
-                                        ; break;
-                                }
-                            </td>
+                             <td>
+                                @((ViewBag.Departments as List<SelectListItem>)
+                                        .FirstOrDefault(u => u.Value == team.DepartmentId.ToString())?.Text ?? "-"
+                                        )
+                            </td>  
                             <td>
                                 @if (team.IsActive == true)
                                 {
