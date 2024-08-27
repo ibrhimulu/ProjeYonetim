@@ -114,13 +114,7 @@ namespace herkesuyurkenkodlama.Controllers
             // Departman ve alt departmanları doldur
             PopulateDepartmentsAndSubDepartments();
             // Projeleri doldur 
-            ViewBag.Projects = _context.Projects
-                                        .Select(p => new SelectListItem
-                                        {
-                                            Value = p.ProjectId.ToString(),
-                                            Text = p.ProjectName
-                                        })
-                                        .ToList();
+            PopulateProjects();
 
             return View(model);
         }
@@ -134,15 +128,11 @@ namespace herkesuyurkenkodlama.Controllers
                 if (_context.Tasklars.Any(x => x.Title.ToLower() == model.Title.ToLower() && x.TaskId != id))
                 {
                     ModelState.AddModelError(nameof(model.Title), "Bu görev adı zaten kullanılıyor.");
-                    PopulateDepartmentsAndSubDepartments(); // Hata durumunda departmanları yeniden yükle
-                                                            // Projeleri doldur 
-                    ViewBag.Projects = _context.Projects
-                                                .Select(p => new SelectListItem
-                                                {
-                                                    Value = p.ProjectId.ToString(),
-                                                    Text = p.ProjectName
-                                                })
-                                                .ToList();
+
+                    // Hata durumunda departmanları ve projeleri yeniden yükleyin
+                    PopulateDepartmentsAndSubDepartments();
+                    PopulateProjects();
+
                     return View(model);
                 }
 
@@ -164,7 +154,10 @@ namespace herkesuyurkenkodlama.Controllers
                 return RedirectToAction(nameof(AdminIndex));
             }
 
-            PopulateDepartmentsAndSubDepartments(); // Validasyon hatası durumunda departmanları yeniden yükle
+            // Validasyon hatası durumunda departmanları ve projeleri yeniden yükleyin
+            PopulateDepartmentsAndSubDepartments();
+            PopulateProjects();
+
             return View(model);
         }
 
@@ -186,6 +179,16 @@ namespace herkesuyurkenkodlama.Controllers
                                                   Text = sd.SubDepartmentName
                                               })
                                               .ToList();
+        }
+        private void PopulateProjects()
+        {
+            ViewBag.Projects = _context.Projects
+                .Select(p => new SelectListItem
+                {
+                    Value = p.ProjectId.ToString(),
+                    Text = p.ProjectName
+                })
+                .ToList();
         }
 
         // Müdürlüğe bağlı şeflikleri getirmek için kullanılan Ajax kodları 
