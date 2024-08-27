@@ -54,38 +54,12 @@
                                 }
                             </td>
                             <td>
-                                @switch (user.DepartmentId)
-                                {
-                                    case 1:
-                                        <span>Bilgi İşlem Daire Başkanlığı</span>
-                                        ; break;
-                                    case 2:
-                                        <span>Garaj</span>
-                                        ; break;
-                                    case 3:
-                                        <span>İnsan Kaynakları</span>
-                                        ; break;
-                                    default:
-                                        <span>-</span>
-                                        ; break;
-                                }
+                                @((ViewBag.Departments as List<SelectListItem>)
+                                    .FirstOrDefault(d => d.Value == user.DepartmentId.ToString())?.Text ?? "-")
                             </td>
                             <td>
-                                @switch (user.SubDepartmentId)
-                                {
-                                    case 1:
-                                        <span>Yazılım</span>
-                                        ; break;
-                                    case 2:
-                                        <span>Donanım</span>
-                                        ; break;
-                                    case 3:
-                                        <span>İşe Alım</span>
-                                        ; break;
-                                    default:
-                                        <span>-</span>
-                                        ; break;
-                                }
+                                @((ViewBag.SubDepartments as List<SelectListItem>)
+                                    .FirstOrDefault(sd => sd.Value == user.SubDepartmentId.ToString())?.Text ?? "-")
                             </td>
                             <td>
                                 @if (user.IsActive==true)

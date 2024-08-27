@@ -41,6 +41,24 @@ namespace herkesuyurkenkodlama.Controllers
                 })
                 .ToList();
 
+            // Müdürlükleri ViewBag'e ekleyin
+            ViewBag.Departments = _context.Mdepartments
+                .Select(d => new SelectListItem
+                {
+                    Value = d.DepartmentId.ToString(),
+                    Text = d.DepartmanName
+                })
+                .ToList();
+
+            // Şeflikleri ViewBag'e ekleyin
+            ViewBag.SubDepartments = _context.Sdepartments
+                .Select(sd => new SelectListItem
+                {
+                    Value = sd.SubDepartmentId.ToString(),
+                    Text = sd.SubDepartmentName
+                })
+                .ToList();
+
             // Projeleri ViewBag'e ekleyin
             ViewBag.Projects = _context.Projects
                 .Select(p => new SelectListItem
@@ -123,8 +141,8 @@ namespace herkesuyurkenkodlama.Controllers
             ViewBag.StatusList = _context.Statuses
                    .Select(s => new SelectListItem
                    {
-                     Value = s.StatusId.ToString(),
-                     Text = s.StatusName
+                       Value = s.StatusId.ToString(),
+                       Text = s.StatusName
                    })
                    .ToList();
 

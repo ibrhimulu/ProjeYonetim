@@ -25,6 +25,24 @@ namespace ProjeYonetim.Controllers
             List<UserViewModel> users =
                 _context.Users.ToList()
                     .Select(x => _mapper.Map<UserViewModel>(x)).ToList();
+            
+            // Müdürlükleri ViewBag'e ekleyin
+            ViewBag.Departments = _context.Mdepartments
+                .Select(d => new SelectListItem
+                {
+                    Value = d.DepartmentId.ToString(),
+                    Text = d.DepartmanName
+                })
+                .ToList();
+
+            // Şeflikleri ViewBag'e ekleyin
+            ViewBag.SubDepartments = _context.Sdepartments
+                .Select(sd => new SelectListItem
+                {
+                    Value = sd.SubDepartmentId.ToString(),
+                    Text = sd.SubDepartmentName
+                })
+                .ToList();
 
             return View(users);
         }
