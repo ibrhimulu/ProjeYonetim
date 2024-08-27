@@ -1,0 +1,169 @@
+﻿@model CreateTasklarModel
+
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="col-lg-6 col-md-8 col-sm-10">
+        <div class="card shadow-lg p-4">
+            <h2 class="text-center mb-4">Görev Oluştur</h2>
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <!-- Başlık -->
+                <div class="form-group mb-3">
+                    <label asp-for="Title" class="form-label">Başlık</label>
+                    <input asp-for="Title" class="form-control" placeholder="Görev Başlığı" />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+
+                <!-- Açıklama -->
+                <div class="form-group mb-3">
+                    <label asp-for="TaskDescription" class="form-label">Açıklama</label>
+                    <textarea asp-for="TaskDescription" class="form-control" placeholder="Görev Açıklaması"></textarea>
+                    <span asp-validation-for="TaskDescription" class="text-danger small"></span>
+                </div>
+
+                <!-- Proje -->
+                <div class="form-group mb-3">
+                    <label asp-for="ProjectId" class="form-label">Proje</label>
+                    <div class="input-group">
+                        <select asp-for="ProjectId" class="form-select" style="width: 91%" asp-items="ViewBag.Projects">
+                            <option value="">Lütfen Seçin</option>
+                        </select>
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-project-diagram fa-fw"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="ProjectId" class="text-danger small"></span>
+                </div>
+
+                <!-- Müdürlük -->
+                <div class="form-group mb-3">
+                    <label asp-for="DepartmentId" class="form-label">Müdürlük</label>
+                    <div class="input-group">
+                        <select asp-for="DepartmentId" class="form-select" style="width: 91%" asp-items="ViewBag.Departments">
+                            <option value="">Lütfen Seçin</option>
+                        </select>
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-building fa-fw"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="DepartmentId" class="text-danger small"></span>
+                </div>
+
+                <!-- Şeflik -->
+                <div class="form-group mb-3">
+                    <label asp-for="SubDepartmentId" class="form-label">Şeflik</label>
+                    <div class="input-group">
+                        <select asp-for="SubDepartmentId" class="form-select" style="width: 91%">
+                            <option value="">Lütfen Seçin</option>
+                        </select>
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-sitemap fa-fw"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="SubDepartmentId" class="text-danger small"></span>
+                </div>
+
+                <!-- Atanan Kullanıcı -->
+                <div class="form-group mb-3">
+                    <label asp-for="AssignedUserId" class="form-label">Atanan Kullanıcı</label>
+                    <div class="input-group">
+                        <select asp-for="AssignedUserId" class="form-select" style="width: 91%">
+                            <option value="">Lütfen Seçin</option>
+                        </select>
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-user fa-fw"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="AssignedUserId" class="text-danger small"></span>
+                </div>
+
+               <!-- Durum -->
+                <div class="form-group mb-3">
+                    <label asp-for="StatusId" class="form-label">Durum</label>
+                    <div class="input-group">
+                        <select asp-for="StatusId" class="form-select" style="width: 91%">                                                       
+                                <option value="">Lütfen Seçin</option>
+                                <option value="1">Bekliyor</option>
+                                <option value="2">Devam Ediyor</option>
+                                <option value="3">Tamamlandı</option>                                                           
+                        </select>
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-info-circle fa-fw"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="StatusId" class="text-danger small"></span>
+                </div>
+
+                <!-- Kaydet Butonu -->
+                <div class="form-group mb-3 text-center">
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                        <i class="fa-solid fa-save me-2 mr-1"></i>Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Müdürlük seçimi değiştiğinde şeflik dropdown'u güncellensin
+            $('#DepartmentId').change(function () {
+                var departmentId = $(this).val();
+                if (departmentId) {
+                    $.ajax({
+                        url: '@Url.Action("GetSubDepartments", "Task")',
+                        type: "GET",
+                        data: { departmentId: departmentId },
+                        success: function (data) {
+                            var subDepartmentDropdown = $('#SubDepartmentId');
+                            subDepartmentDropdown.empty();
+                            subDepartmentDropdown.append('<option value="">Lütfen Seçin</option>');
+                            $.each(data, function (i, subDepartment) {
+                                subDepartmentDropdown.append('<option value="' + subDepartment.subDepartmentId + '">' + subDepartment.subDepartmentName + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#SubDepartmentId').empty();
+                    $('#SubDepartmentId').append('<option value="">Lütfen Seçin</option>');
+                }
+            });
+
+            // Şeflik seçimi değiştiğinde kullanıcı dropdown'u güncellensin
+            $('#SubDepartmentId').change(function () {
+                var subDepartmentId = $(this).val();
+                if (subDepartmentId) {
+                    $.ajax({
+                        url: '@Url.Action("GetUsersBySubDepartment", "Task")',
+                        type: "GET",
+                        data: { subDepartmentId: subDepartmentId },
+                        success: function (data) {
+                            var userDropdown = $('#AssignedUserId');
+                            userDropdown.empty();
+                            userDropdown.append('<option value="">Lütfen Seçin</option>');
+                            $.each(data, function (i, user) {
+                                userDropdown.append('<option value="' + user.userId + '">' + user.username + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#AssignedUserId').empty();
+                    $('#AssignedUserId').append('<option value="">Lütfen Seçin</option>');
+                }
+            });
+        });
+    </script>
+}

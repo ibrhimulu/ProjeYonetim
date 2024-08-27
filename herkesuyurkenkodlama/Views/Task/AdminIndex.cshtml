@@ -36,8 +36,14 @@
                             <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                 <span title="@tasklar.TaskDescription">@tasklar.TaskDescription</span>
                             </td>
-                            <td>@(tasklar.ProjectId)</td>
-                            <td>@(tasklar.AssignedUserId)</td>
+                            <td>
+                                @((ViewBag.Projects as List<SelectListItem>)
+                                    .FirstOrDefault(p => p.Value == tasklar.ProjectId.ToString())?.Text ?? "-")
+                            </td>
+                            <td>
+                                @((ViewBag.Users as List<SelectListItem>)
+                                    .FirstOrDefault(u => u.Value == tasklar.AssignedUserId.ToString())?.Text ?? "-")
+                            </td>
                             <td>
                                 @switch (tasklar.DepartmentId)
                                 {
