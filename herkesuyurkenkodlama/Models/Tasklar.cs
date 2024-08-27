@@ -20,6 +20,7 @@ namespace herkesuyurkenkodlama.Models
         public int? SubDepartmentId { get; set; }
         public int StatusId { get; set; }
         public string? TaskDescription { get; set; }
+        public string? TaskComment { get; set; }
 
         public virtual User AssignedUser { get; set; } = null!;
         public virtual Mdepartment? Department { get; set; }
