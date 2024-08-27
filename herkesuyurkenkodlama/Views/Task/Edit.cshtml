@@ -91,9 +91,17 @@
                     <div class="input-group">
                         <select asp-for="StatusId" class="form-select" style="width: 91%">
                             <option value="">Lütfen Seçin</option>
-                            <option value="1">Bekliyor</option>
-                            <option value="2">Devam Ediyor</option>
-                            <option value="3">Tamamlandı</option>
+                            @if (ViewBag.StatusList != null)
+                            {
+                                foreach (var status in ViewBag.StatusList)
+                                {
+                                    <option value="@status.Value">@status.Text</option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="">Durumlar yüklenemedi</option>
+                            }
                         </select>
                         <div class="input-group-append">
                             <span class="input-group-text">
@@ -103,6 +111,7 @@
                     </div>
                     <span asp-validation-for="StatusId" class="text-danger small"></span>
                 </div>
+
 
                 <!-- Aktif mi? -->
                 <div class="form-group mb-3">

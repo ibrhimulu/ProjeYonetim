@@ -50,6 +50,15 @@ namespace herkesuyurkenkodlama.Controllers
                 })
                 .ToList();
 
+            // Durumlar için
+            ViewBag.StatusList = _context.Statuses
+                  .Select(s => new SelectListItem
+                  {
+                      Value = s.StatusId.ToString(),
+                      Text = s.StatusName
+                  })
+                  .ToList();
+
             return View(tasklars);
         }
 
@@ -111,10 +120,18 @@ namespace herkesuyurkenkodlama.Controllers
             // Görev verilerini EditTasklarModel'e map'le
             EditTasklarModel model = _mapper.Map<EditTasklarModel>(task);
 
+            ViewBag.StatusList = _context.Statuses
+                   .Select(s => new SelectListItem
+                   {
+                     Value = s.StatusId.ToString(),
+                     Text = s.StatusName
+                   })
+                   .ToList();
+
             // Departman ve alt departmanları doldur
             PopulateDepartmentsAndSubDepartments();
             // Projeleri doldur 
-            PopulateProjects();
+            PopulateProjectsAndStatues();
 
             return View(model);
         }
@@ -131,7 +148,7 @@ namespace herkesuyurkenkodlama.Controllers
 
                     // Hata durumunda departmanları ve projeleri yeniden yükleyin
                     PopulateDepartmentsAndSubDepartments();
-                    PopulateProjects();
+                    PopulateProjectsAndStatues();
 
                     return View(model);
                 }
@@ -156,7 +173,7 @@ namespace herkesuyurkenkodlama.Controllers
 
             // Validasyon hatası durumunda departmanları ve projeleri yeniden yükleyin
             PopulateDepartmentsAndSubDepartments();
-            PopulateProjects();
+            PopulateProjectsAndStatues();
 
             return View(model);
         }
@@ -180,7 +197,7 @@ namespace herkesuyurkenkodlama.Controllers
                                               })
                                               .ToList();
         }
-        private void PopulateProjects()
+        private void PopulateProjectsAndStatues()
         {
             ViewBag.Projects = _context.Projects
                 .Select(p => new SelectListItem
@@ -189,6 +206,14 @@ namespace herkesuyurkenkodlama.Controllers
                     Text = p.ProjectName
                 })
                 .ToList();
+
+            ViewBag.StatusList = _context.Statuses
+                 .Select(s => new SelectListItem
+                 {
+                     Value = s.StatusId.ToString(),
+                     Text = s.StatusName
+                 })
+                 .ToList();
         }
 
         // Müdürlüğe bağlı şeflikleri getirmek için kullanılan Ajax kodları 

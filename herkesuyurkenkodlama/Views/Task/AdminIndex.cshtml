@@ -90,22 +90,23 @@
                             </td>
                             <td>@tasklar.CreatedAt</td>
                             <td>
-                                @switch (tasklar.StatusId)
+                                @if (tasklar.StatusId == 1)
                                 {
-                                    case 1:
-                                        <span class="badge bg-primary">Tamamlandı</span>
-                                        ; break;
-                                    case 2:
-                                        <span class="badge bg-warning text-dark">Devam Ediyor</span>
-                                        ; break;
-                                    case 3:
-                                        <span class="badge bg-danger">Bekliyor</span>
-                                        ; break;
-                                    default:
-                                        <span class="badge bg-secondary">Bilinmiyor</span>
-                                        ; break;
+                                    <span class="badge bg-danger text-dark">Bekliyor</span>
                                 }
-                            </td>
+                                else if (tasklar.StatusId == 2)
+                                {
+                                    <span class="badge bg-primary">Devam Ediyor</span>
+                                }
+                                else if (tasklar.StatusId == 3)
+                                {
+                                    <span class="badge bg-success">Tamamlandı</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Bilinmiyor</span>
+                                }
+                            </td>                            
                             <td>
                                 <a asp-action="Edit" asp-route-id="@tasklar.TaskId" class="btn btn-info btn-sm text-white"><i class="fa fa-edit"></i> Düzenle</a>
                             </td>
