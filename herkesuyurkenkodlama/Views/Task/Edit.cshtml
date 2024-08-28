@@ -112,6 +112,13 @@
                     <span asp-validation-for="StatusId" class="text-danger small"></span>
                 </div>
 
+                <!-- Yorum -->
+                <div class="form-group mb-3">
+                    <label asp-for="TaskComment" class="form-label">Yorum</label>
+                    <textarea asp-for="TaskComment" class="form-control" placeholder="Görevle ilgili yorumlarınızı girin"></textarea>
+                    <span asp-validation-for="TaskComment" class="text-danger small"></span>
+                </div>
+
 
                 <!-- Aktif mi? -->
                 <div class="form-group mb-3">

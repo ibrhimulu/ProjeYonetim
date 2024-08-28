@@ -28,17 +28,17 @@ namespace herkesuyurkenkodlama.Controllers
         {
             List<ProjectViewModel> projects =
                 _context.Projects.ToList()
-                    .Select(x => _mapper.Map<ProjectViewModel>(x)).ToList();
+                    .Select(x => _mapper.Map<ProjectViewModel>(x))
+                    .ToList();
 
             ViewBag.Users = _context.Users
-       .Select(u => new SelectListItem
-       {
-           Value = u.UserId.ToString(),
-           Text = u.Username
-       })
-       .ToList();
-
-            // Müdürlükleri ViewBag'e ekleyin
+                .Select(u => new SelectListItem
+                {
+                   Value = u.UserId.ToString(),
+                   Text = u.Username
+                })
+                .ToList();
+           
             ViewBag.Departments = _context.Mdepartments
                 .Select(d => new SelectListItem
                 {
@@ -47,7 +47,6 @@ namespace herkesuyurkenkodlama.Controllers
                 })
                 .ToList();
 
-            // Şeflikleri ViewBag'e ekleyin
             ViewBag.SubDepartments = _context.Sdepartments
                 .Select(sd => new SelectListItem
                 {
