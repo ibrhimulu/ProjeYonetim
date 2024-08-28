@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using herkesuyurkenkodlama.Contexts;
 using herkesuyurkenkodlama.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -26,6 +27,7 @@ namespace herkesuyurkenkodlama.Controllers
             return View(teams);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminIndex()
         {
             List<TeamViewModel> teams =
@@ -45,7 +47,7 @@ namespace herkesuyurkenkodlama.Controllers
         }
 
 
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             // Departman ve Alt Departmanları çekip ViewBag'e yükle
@@ -103,6 +105,7 @@ namespace herkesuyurkenkodlama.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
             // İlgili şefliği veritabanından bul

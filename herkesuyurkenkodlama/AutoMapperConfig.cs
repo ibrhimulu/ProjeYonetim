@@ -17,8 +17,9 @@ namespace ProjeYonetim
 
             CreateMap<Tasklar, TasklarViewModel>().ReverseMap();
             CreateMap<Tasklar, CreateTasklarModel>().ReverseMap();
-            CreateMap<Tasklar, EditTasklarModel>().ReverseMap();
-            
+            CreateMap<Tasklar, EditTasklarModel>().ReverseMap(); 
+            //CreateMap<Tasklar, TasklarUserViewModel>().ReverseMap();
+
             CreateMap<Sdepartment, TeamViewModel>().ReverseMap();
             CreateMap<Sdepartment, CreateTeamModel>().ReverseMap();
             CreateMap<Sdepartment, EditTeamModel>().ReverseMap();

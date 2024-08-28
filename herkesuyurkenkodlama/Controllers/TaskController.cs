@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using herkesuyurkenkodlama.Contexts;
 using herkesuyurkenkodlama.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -22,9 +23,55 @@ namespace herkesuyurkenkodlama.Controllers
                _context.Tasklars.ToList()
                    .Select(x => _mapper.Map<TasklarViewModel>(x)).ToList();
 
-            return View();
+            // Kullanıcıları ViewBag'e ekleyin
+            ViewBag.Users = _context.Users
+                .Select(u => new SelectListItem
+                {
+                    Value = u.UserId.ToString(),
+                    Text = u.Username
+                })
+                .ToList();
+
+            // Müdürlükleri ViewBag'e ekleyin
+            ViewBag.Departments = _context.Mdepartments
+                .Select(d => new SelectListItem
+                {
+                    Value = d.DepartmentId.ToString(),
+                    Text = d.DepartmanName
+                })
+                .ToList();
+
+            // Şeflikleri ViewBag'e ekleyin
+            ViewBag.SubDepartments = _context.Sdepartments
+                .Select(sd => new SelectListItem
+                {
+                    Value = sd.SubDepartmentId.ToString(),
+                    Text = sd.SubDepartmentName
+                })
+                .ToList();
+
+            // Projeleri ViewBag'e ekleyin
+            ViewBag.Projects = _context.Projects
+                .Select(p => new SelectListItem
+                {
+                    Value = p.ProjectId.ToString(),
+                    Text = p.ProjectName
+                })
+                .ToList();
+
+            // Durumlar için
+            ViewBag.StatusList = _context.Statuses
+                  .Select(s => new SelectListItem
+                  {
+                      Value = s.StatusId.ToString(),
+                      Text = s.StatusName
+                  })
+                  .ToList();
+
+            return View(tasklars);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminIndex()
         {
             // Taskları ViewModel'e dönüştür
@@ -80,7 +127,7 @@ namespace herkesuyurkenkodlama.Controllers
             return View(tasklars);
         }
 
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             var projects = _context.Projects
@@ -130,6 +177,7 @@ namespace herkesuyurkenkodlama.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
             // Veritabanından mevcut görevi bul

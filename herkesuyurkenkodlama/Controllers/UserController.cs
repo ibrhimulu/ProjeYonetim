@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using herkesuyurkenkodlama.Models;
 using NETCore.Encrypt.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProjeYonetim.Controllers
 {
@@ -20,6 +21,7 @@ namespace ProjeYonetim.Controllers
             _configuration = configuration;
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             List<UserViewModel> users =
@@ -47,6 +49,7 @@ namespace ProjeYonetim.Controllers
             return View(users);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             // Departman ve Alt Departmanları çekip ViewBag'e yükle
@@ -106,6 +109,7 @@ namespace ProjeYonetim.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
             User user = _context.Users.Find(id);

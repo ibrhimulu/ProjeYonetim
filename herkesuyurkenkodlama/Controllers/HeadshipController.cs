@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using herkesuyurkenkodlama.Contexts;
 using herkesuyurkenkodlama.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -17,6 +18,7 @@ namespace herkesuyurkenkodlama.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             List<HeadshipViewModel> teams =
@@ -26,6 +28,7 @@ namespace herkesuyurkenkodlama.Controllers
             return View(teams);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {           
             return View();
@@ -57,6 +60,7 @@ namespace herkesuyurkenkodlama.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
             Mdepartment mdepartment = _context.Mdepartments.Find(id);

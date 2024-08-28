@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using herkesuyurkenkodlama.Contexts;
 using herkesuyurkenkodlama.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -24,6 +25,8 @@ namespace herkesuyurkenkodlama.Controllers
 
             return View();
         }
+
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminIndex()
         {
             List<ProjectViewModel> projects =
@@ -58,6 +61,7 @@ namespace herkesuyurkenkodlama.Controllers
             return View(projects);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             // Departman ve Alt Departmanları çekip ViewBag'e yükle
@@ -115,6 +119,7 @@ namespace herkesuyurkenkodlama.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
             Project project = _context.Projects.Find(id);
