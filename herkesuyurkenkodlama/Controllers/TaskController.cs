@@ -277,6 +277,19 @@ namespace herkesuyurkenkodlama.Controllers
         }
 
 
+        [HttpPost]
+        public IActionResult AddComment(int taskId, string newComment)
+        {
+            var task = _context.Tasklars.FirstOrDefault(t => t.TaskId == taskId);
+            if (task != null && !string.IsNullOrEmpty(newComment))
+            {
+                task.TaskComment = newComment;
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("UserIndex");
+        }
+
         private void PopulateDepartmentsAndSubDepartments()
         {
             ViewBag.Departments = _context.Mdepartments
