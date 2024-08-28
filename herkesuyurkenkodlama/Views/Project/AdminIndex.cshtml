@@ -38,40 +38,14 @@
                                     @((ViewBag.Users as List<SelectListItem>)
                                         .FirstOrDefault(u => u.Value == project.OwnerUserId.ToString())?.Text ?? "-"
                                         )
-                            </td>                            
-                            <td>
-                                @switch (project.DepartmentId)
-                                {
-                                    case 1:
-                                        <span>Bilgi İşlem Daire Başkanlığı</span>
-                                        ; break;
-                                    case 2:
-                                        <span>Garaj</span>
-                                        ; break;
-                                    case 3:
-                                        <span>İnsan Kaynakları</span>
-                                        ; break;
-                                    default:
-                                        <span>-</span>
-                                        ; break;
-                                }
                             </td>
                             <td>
-                                @switch (project.SubDepartmentId)
-                                {
-                                    case 1:
-                                        <span>Yazılım</span>
-                                        ; break;
-                                    case 2:
-                                        <span>Donanım</span>
-                                        ; break;
-                                    case 3:
-                                        <span>İşe Alım</span>
-                                        ; break;
-                                    default:
-                                        <span>-</span>
-                                        ; break;
-                                }
+                                @((ViewBag.Departments as List<SelectListItem>)
+                                    .FirstOrDefault(d => d.Value == project.DepartmentId.ToString())?.Text ?? "-")
+                            </td>
+                            <td>
+                                @((ViewBag.SubDepartments as List<SelectListItem>)
+                                    .FirstOrDefault(sd => sd.Value == project.SubDepartmentId.ToString())?.Text ?? "-")
                             </td>
                             <td>
                                 @if (project.IsActive==true)
