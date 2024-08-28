@@ -53,7 +53,8 @@
                                 @((ViewBag.SubDepartments as List<SelectListItem>)
                                     .FirstOrDefault(sd => sd.Value == tasklar.SubDepartmentId.ToString())?.Text ?? "-")
                             </td>
-                            <td>@tasklar.TaskComment</td>
+                            <td>@(string.IsNullOrEmpty(tasklar.TaskComment) ? "-" : tasklar.TaskComment)</td>
+
                             <td>
                                 @if (tasklar.IsActive)
                                 {

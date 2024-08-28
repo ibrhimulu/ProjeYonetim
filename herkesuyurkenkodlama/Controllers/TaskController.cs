@@ -4,6 +4,7 @@ using herkesuyurkenkodlama.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace herkesuyurkenkodlama.Controllers
 {
@@ -19,9 +20,39 @@ namespace herkesuyurkenkodlama.Controllers
         }
         public IActionResult UserIndex()
         {
-            List<TasklarViewModel> tasklars =
-               _context.Tasklars.ToList()
-                   .Select(x => _mapper.Map<TasklarViewModel>(x)).ToList();
+            // Giriş yapmış kullanıcının ID'sini al
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Kullanıcıya ait görevleri sorgula
+            var tasksForUser =
+                from task in _context.Tasklars
+                join project in _context.Projects on task.ProjectId equals project.ProjectId
+                join status in _context.Statuses on task.StatusId equals status.StatusId
+                join assignedUser in _context.Users on task.AssignedUserId equals assignedUser.UserId
+                join department in _context.Mdepartments on task.DepartmentId equals department.DepartmentId
+                join subDepartment in _context.Sdepartments on task.SubDepartmentId equals subDepartment.SubDepartmentId
+                where task.AssignedUserId == Convert.ToInt32(userId) && task.IsActive
+                select new TasklarViewModel
+                {
+                    TaskId = task.TaskId,
+                    Title = task.Title,
+                    ProjectId = project.ProjectId,
+                    StatusId = status.StatusId,
+                    DepartmentId = department.DepartmentId,
+                    SubDepartmentId = subDepartment.SubDepartmentId,
+                    CreatedAt = task.CreatedAt,
+                    TaskComment = task.TaskComment,
+                    // Diğer gerekli alanlar
+                };
+
+            var userTasks = tasksForUser.ToList();
+
+
+            // Eğer kullanıcının görevleri yoksa, boş bir liste gönder
+            if (userTasks == null || !userTasks.Any())
+            {
+                userTasks = new List<TasklarViewModel>();
+            }
 
             // Kullanıcıları ViewBag'e ekleyin
             ViewBag.Users = _context.Users
@@ -59,17 +90,18 @@ namespace herkesuyurkenkodlama.Controllers
                 })
                 .ToList();
 
-            // Durumlar için
+            // Durumları ViewBag'e ekleyin
             ViewBag.StatusList = _context.Statuses
-                  .Select(s => new SelectListItem
-                  {
-                      Value = s.StatusId.ToString(),
-                      Text = s.StatusName
-                  })
-                  .ToList();
+                .Select(s => new SelectListItem
+                {
+                    Value = s.StatusId.ToString(),
+                    Text = s.StatusName
+                })
+                .ToList();
 
-            return View(tasklars);
+            return View(userTasks);
         }
+
 
         [Authorize(Roles = "Admin")]
         public IActionResult AdminIndex()
