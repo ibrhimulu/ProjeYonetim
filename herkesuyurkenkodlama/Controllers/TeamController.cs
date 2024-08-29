@@ -4,6 +4,7 @@ using herkesuyurkenkodlama.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace herkesuyurkenkodlama.Controllers
 {
@@ -20,12 +21,38 @@ namespace herkesuyurkenkodlama.Controllers
 
         public IActionResult UserIndex()
         {
-            List<TeamViewModel> teams =
-               _context.Sdepartments.ToList()
-                   .Select(x => _mapper.Map<TeamViewModel>(x)).ToList();
+            // Giriş yapmış kullanıcının ID'sini al
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            return View(teams);
+            // Giriş yapmış kullanıcının bağlı olduğu şefliğin ID'sini al
+            var userSubDepartmentId = _context.Users
+                .Where(u => u.UserId == int.Parse(userId))
+                .Select(u => u.SubDepartmentId)
+                .FirstOrDefault();
+
+            // Şefliğe ait tüm kullanıcıları listele
+            var usersInSubDepartment = _context.Users
+                .Where(u => u.SubDepartmentId == userSubDepartmentId)
+                .Select(u => new UserViewModel
+                {
+                    Username = u.Username,
+                    ProfileImagePath = Path.GetFileName(u.ProfileImagePath), // Dosya adını sadece almak için
+                })
+                .ToList();
+
+            // Şeflik adını al
+            var subDepartmentName = _context.Sdepartments
+                .Where(sd => sd.SubDepartmentId == userSubDepartmentId)
+                .Select(sd => sd.SubDepartmentName)
+                .FirstOrDefault();
+
+            // View'a Şeflik adı ve kullanıcılar listesini gönder
+            var model = Tuple.Create(subDepartmentName, usersInSubDepartment);
+            return View(model);
         }
+
+
+
 
         [Authorize(Roles = "Admin")]
         public IActionResult AdminIndex()

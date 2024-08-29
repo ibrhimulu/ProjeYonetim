@@ -1,42 +1,19 @@
-﻿@{
-    ViewData["Title"] = "Takımlar";
-}
+﻿@model Tuple<string, List<UserViewModel>>
 
+<div class="container mt-4">
+    <h1 class="mb-4">@Model.Item1</h1> <!-- Şeflik adı burada görüntülenecek -->
 
-<!-- Takımlar Section -->
-<div class="container mt-5">
-    <h1>Şeflikler</h1>
     <div class="row">
-        <!-- Team Card -->
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body text-center">
-                    <img src="https://via.placeholder.com/100" class="rounded-circle mb-3" alt="Team Member">
-                    <h5 class="card-title">Şeflik Üyesi 1</h5>
-                    <p class="card-text">Şeflik üyesi açıklaması burada yer alır.</p>
+        @foreach (var user in Model.Item2)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <img src="@Url.Content($"/uploads/{user.ProfileImagePath}")" alt="Profile Image" class="rounded-circle mb-3" style="width: 100px; height: 100px;">
+                        <h5 class="card-title">@user.Username</h5> <!-- Kullanıcı adı burada görüntülenecek -->
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- Team Card -->
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body text-center">
-                    <img src="https://via.placeholder.com/100" class="rounded-circle mb-3" alt="Team Member">
-                    <h5 class="card-title">Şeflik Üyesi 2</h5>
-                    <p class="card-text">Şeflik üyesi açıklaması burada yer alır.</p>
-                </div>
-            </div>
-        </div>
-        <!-- Team Card -->
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body text-center">
-                    <img src="https://via.placeholder.com/100" class="rounded-circle mb-3" alt="Team Member">
-                    <h5 class="card-title">Şeflik Üyesi 3</h5>
-                    <p class="card-text">Şeflik üyesi açıklaması burada yer alır.</p>
-                </div>
-            </div>
-        </div>
+        }
     </div>
 </div>
-
