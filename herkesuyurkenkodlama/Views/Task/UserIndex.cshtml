@@ -26,14 +26,19 @@
                     {
                         <tr>
                             <td>@tasklar.Title</td>
-                            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                <span title="@tasklar.TaskDescription">@tasklar.TaskDescription</span>
+                             <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                <span title="@tasklar.TaskDescription">
+                                    @(string.IsNullOrEmpty(tasklar.TaskDescription) ? "-" : tasklar.TaskDescription)
+                                </span>
                             </td>
                             <td>
                                 @((ViewBag.Projects as List<SelectListItem>)
                                     .FirstOrDefault(p => p.Value == tasklar.ProjectId.ToString())?.Text ?? "-")
                             </td>
-                            <td>@(string.IsNullOrEmpty(tasklar.TaskComment) ? "-" : tasklar.TaskComment)</td>
+                            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                <span title="@tasklar.TaskComment">@(string.IsNullOrEmpty(tasklar.TaskComment) ? "-" : tasklar.TaskComment)</span>
+                            </td>
+
                             <td>@tasklar.CreatedAt.ToString("dd/MM/yyyy")</td>
                             <td>
                                 @if (tasklar.StatusId == 1)
@@ -57,7 +62,7 @@
                                 <form method="post" action="/Task/AddComment">
                                     <input type="hidden" name="TaskId" value="@tasklar.TaskId" />
                                     <input type="text" name="NewComment" placeholder="Yorum yaz..." class="form-control form-control-sm" />
-                                    <button type="submit" class="btn btn-sm btn-primary mt-2">Ekle</button>
+                                    <button type="submit" class="btn btn-sm btn-primary mt-1">Ekle</button>
                                 </form>
                             </td>
                         </tr>

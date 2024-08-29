@@ -33,10 +33,13 @@
                     @foreach (var tasklar in Model)
                     {
                         <tr>
-                            <td>@(tasklar.Title)</td>                           
-                            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                <span title="@tasklar.TaskDescription">@tasklar.TaskDescription</span>
+                            <td>@(tasklar.Title)</td>
+                            <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                <span title="@tasklar.TaskDescription">
+                                    @(string.IsNullOrEmpty(tasklar.TaskDescription) ? "-" : tasklar.TaskDescription)
+                                </span>
                             </td>
+
                             <td>
                                 @((ViewBag.Projects as List<SelectListItem>)
                                     .FirstOrDefault(p => p.Value == tasklar.ProjectId.ToString())?.Text ?? "-")
@@ -53,7 +56,9 @@
                                 @((ViewBag.SubDepartments as List<SelectListItem>)
                                     .FirstOrDefault(sd => sd.Value == tasklar.SubDepartmentId.ToString())?.Text ?? "-")
                             </td>
-                            <td>@(string.IsNullOrEmpty(tasklar.TaskComment) ? "-" : tasklar.TaskComment)</td>
+                            <td style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                <span title="@tasklar.TaskComment">@(string.IsNullOrEmpty(tasklar.TaskComment) ? "-" : tasklar.TaskComment)</span>
+                            </td>
 
                             <td>
                                 @if (tasklar.IsActive)
