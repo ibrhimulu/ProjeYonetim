@@ -290,6 +290,36 @@ namespace herkesuyurkenkodlama.Controllers
             return RedirectToAction("UserIndex");
         }
 
+        [HttpPost]
+        public IActionResult CompleteTask(int TaskId)
+        {
+            var task = _context.Tasklars.FirstOrDefault(t => t.TaskId == TaskId);
+
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            task.StatusId = 3; 
+
+            _context.SaveChanges();
+
+            return RedirectToAction("UserIndex");
+        }
+        [HttpPost]
+        public IActionResult RevertTask(int taskId)
+        {
+            var task = _context.Tasklars.Find(taskId);
+            if (task != null)
+            {
+                task.StatusId = 2;
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("UserIndex");
+        }
+
+
         private void PopulateDepartmentsAndSubDepartments()
         {
             ViewBag.Departments = _context.Mdepartments

@@ -5,11 +5,11 @@
 }
 
 <div class="container mt-4">
-    <h1 class="mb-4">@ViewData["Title"]</h1>
+    <h1 class="mb-4 text-center">@ViewData["Title"]</h1>
 
     <div class="card">
         <div class="card-body">
-            <table class="table table-striped table-bordered table-hover table-sm">
+            <table class="table table-hover">
                 <thead class="table-light">
                     <tr>
                         <th>Görev Adı</th>
@@ -18,7 +18,8 @@
                         <th>Yorum</th>
                         <th>Oluş. Tarihi</th>
                         <th>Durum</th>
-                        <th>Yorum Ekle</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,7 +27,7 @@
                     {
                         <tr>
                             <td>@tasklar.Title</td>
-                             <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                 <span title="@tasklar.TaskDescription">
                                     @(string.IsNullOrEmpty(tasklar.TaskDescription) ? "-" : tasklar.TaskDescription)
                                 </span>
@@ -38,7 +39,6 @@
                             <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                 <span title="@tasklar.TaskComment">@(string.IsNullOrEmpty(tasklar.TaskComment) ? "-" : tasklar.TaskComment)</span>
                             </td>
-
                             <td>@tasklar.CreatedAt.ToString("dd/MM/yyyy")</td>
                             <td>
                                 @if (tasklar.StatusId == 1)
@@ -64,6 +64,22 @@
                                     <input type="text" name="NewComment" placeholder="Yorum yaz..." class="form-control form-control-sm" />
                                     <button type="submit" class="btn btn-sm btn-primary mt-1">Ekle</button>
                                 </form>
+                            </td>
+                            <td>
+                                @if (tasklar.StatusId == 3)
+                                {
+                                    <form method="post" action="/Task/RevertTask">
+                                        <input type="hidden" name="TaskId" value="@tasklar.TaskId" />
+                                        <button type="submit" class="btn btn-sm btn-warning mt-1">Geri Al</button>
+                                    </form>
+                                }
+                                else if (tasklar.StatusId != 3)
+                                {
+                                    <form method="post" action="/Task/CompleteTask">
+                                        <input type="hidden" name="TaskId" value="@tasklar.TaskId" />
+                                        <button type="submit" class="btn btn-sm btn-success mt-1">Görevi Tamamla</button>
+                                    </form>
+                                }
                             </td>
                         </tr>
                     }
