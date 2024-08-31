@@ -242,14 +242,14 @@ footer {
         position: relative; /* Navbar'ýn konumunu ayarla */
     }
 
-    .navbar .navbar-collapse {
-        display: block !important; /* Menü çökertme durumunu ayarla */
-    }
+        .navbar .navbar-collapse {
+            display: block !important; /* Menü çökertme durumunu ayarla */
+        }
 
-    .navbar .nav-link {
-        display: block; /* Menü öðelerini blok olarak göster */
-        margin: 5px 0; /* Menü öðeleri arasýnda boþluk býrak */
-    }
+        .navbar .nav-link {
+            display: block; /* Menü öðelerini blok olarak göster */
+            margin: 5px 0; /* Menü öðeleri arasýnda boþluk býrak */
+        }
 
     .user-dropdown {
         display: block; /* Profil dropdown'ýný gösterir */
@@ -268,11 +268,14 @@ footer {
     }
 
     .sidebar {
-        display: none; /* Küçük ekranlarda sidebar'ý gizle */
+        width: 100%; /* Sidebar'ý tam geniþlikte göster */
+        position: relative; /* Sidebar'ý yerinde tut */
+        margin-top: 0;
+        z-index: 1;
+        display: block; /* Sidebar'ýn görünür olmasýný saðlar */
     }
 
     .main-content {
-        margin-left: 0; /* Ana içeriðin sol marginini sýfýrla */
-        margin-top: 56px; /* Navbar yüksekliði kadar margin býrak */
+        margin-left: 0; /* Main content'i sidebar'a göre hizala */
     }
 }
