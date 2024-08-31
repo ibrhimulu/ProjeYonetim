@@ -42,6 +42,8 @@ namespace herkesuyurkenkodlama.Controllers
                     SubDepartmentId = subDepartment.SubDepartmentId,
                     CreatedAt = task.CreatedAt,
                     TaskComment = task.TaskComment,
+                    TaskDescription = task.TaskDescription,
+
                     // Diğer gerekli alanlar
                 };
 
