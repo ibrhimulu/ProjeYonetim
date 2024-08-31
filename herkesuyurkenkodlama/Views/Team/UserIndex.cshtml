@@ -1,19 +1,75 @@
-﻿@model Tuple<string, List<UserViewModel>>
+﻿@using System.Security.Claims
+@model Tuple<string, List<UserViewModel>>
+
+@{
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Giriş yapmış kullanıcının ID'sini al
+    var currentUserIdInt = int.Parse(currentUserId); // ID'yi int'e dönüştür
+}
+
+<style>
+    .user-card {
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+        .user-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+    .profile-image {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+    }
+
+    .featured-user-card {
+        border: 2px solid #007bff;
+        background-color: #f0f8ff;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+    }
+
+    .card-text {
+        font-size: 0.875rem;
+    }
+</style>
 
 <div class="container mt-4">
-    <h1 class="mb-4">@Model.Item1</h1> <!-- Şeflik adı burada görüntülenecek -->
+    <h1 class="mb-4 text-center display-4">@Model.Item1</h1> <!-- Şeflik adı burada görüntülenecek -->
 
     <div class="row">
-        @foreach (var user in Model.Item2)
+        <!-- Giriş yapmış kullanıcıyı en başta özel olarak gösteriyoruz -->
+        @if (Model.Item2.Any())
         {
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-body text-center">
-                        <img src="@Url.Content($"/uploads/{user.ProfileImagePath}")" alt="Profile Image" class="rounded-circle mb-3" style="width: 100px; height: 100px;">
-                        <h5 class="card-title">@user.Username</h5> <!-- Kullanıcı adı burada görüntülenecek -->
+            var currentUser = Model.Item2.FirstOrDefault(u => u.UserId == currentUserIdInt); // Giriş yapmış kullanıcıyı buluyor
+
+            if (currentUser != null)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="card user-card border-0 shadow-sm featured-user-card">
+                        <div class="card-body text-center">
+                            <img src="@Url.Content($"/uploads/{currentUser.ProfileImagePath}")" alt="Profile Image" class="rounded-circle profile-image mb-3">
+                            <h5 class="card-title">@currentUser.Username</h5> <!-- Kullanıcı adı burada görüntülenecek -->
+                            <p class="card-text text-muted">Siz</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
+
+            <!-- Diğer kullanıcıları listeleyin -->
+            @foreach (var user in Model.Item2.Where(u => u.UserId != currentUserIdInt)) // Giriş yapmış kullanıcıyı atlıyoruz
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="card user-card border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <img src="@Url.Content($"/uploads/{user.ProfileImagePath}")" alt="Profile Image" class="rounded-circle profile-image mb-3">
+                            <h5 class="card-title">@user.Username</h5> <!-- Kullanıcı adı burada görüntülenecek -->
+                        </div>
+                    </div>
+                </div>
+            }
         }
     </div>
 </div>

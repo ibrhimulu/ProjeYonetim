@@ -24,9 +24,15 @@ namespace herkesuyurkenkodlama.Controllers
             // Giriş yapmış kullanıcının ID'sini al
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            if (string.IsNullOrEmpty(userId) || !int.TryParse(userId, out var userIdInt))
+            {
+                // ID dönüşüm hatası
+                return BadRequest("Geçersiz kullanıcı ID'si.");
+            }
+
             // Giriş yapmış kullanıcının bağlı olduğu şefliğin ID'sini al
             var userSubDepartmentId = _context.Users
-                .Where(u => u.UserId == int.Parse(userId))
+                .Where(u => u.UserId == userIdInt)
                 .Select(u => u.SubDepartmentId)
                 .FirstOrDefault();
 
@@ -35,6 +41,7 @@ namespace herkesuyurkenkodlama.Controllers
                 .Where(u => u.SubDepartmentId == userSubDepartmentId)
                 .Select(u => new UserViewModel
                 {
+                    UserId = u.UserId,
                     Username = u.Username,
                     ProfileImagePath = Path.GetFileName(u.ProfileImagePath), // Dosya adını sadece almak için
                 })
@@ -50,6 +57,8 @@ namespace herkesuyurkenkodlama.Controllers
             var model = Tuple.Create(subDepartmentName, usersInSubDepartment);
             return View(model);
         }
+
+
 
 
         [Authorize(Roles = "Admin")]
