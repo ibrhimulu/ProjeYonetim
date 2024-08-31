@@ -4,69 +4,47 @@
     ViewData["Title"] = "Projeler";
 }
 
-
 <div class="container mt-5">
-    <h1>Projeler</h1>
-    <div class="row">
-        <!-- Project Card 1 -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Proje 1</h5>
-                    <p class="card-text">Proje açıklaması burada yer alır.</p>
-                    <a href="#" class="btn btn-primary">Detayları Gör</a>
+    <h1 class="mb-4 text-center display-4">@ViewData["Title"]</h1>
+
+    <div class="row justify-content-center">
+        @foreach (var project in Model)
+        {
+            <div class="col-md-8 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@project.ProjectName</h5>
+                        <p class="card-text">
+                            @(string.IsNullOrEmpty(project.Description) ? "Proje açıklaması burada yer alır." : project.Description)
+                        </p>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#projectDetailsModal-@project.ProjectId">
+                            Detayları Gör
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- Project Card 2 -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Proje 2</h5>
-                    <p class="card-text">Proje açıklaması burada yer alır.</p>
-                    <a href="#" class="btn btn-primary">Detayları Gör</a>
+
+            <!-- Modal -->
+            <div class="modal fade" id="projectDetailsModal-@project.ProjectId" tabindex="-1" aria-labelledby="projectDetailsModalLabel-@project.ProjectId" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="projectDetailsModalLabel-@project.ProjectId">@project.ProjectName Detayları</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Kullanıcı Adı:</strong> @ViewBag.UserName</p>
+                            <p><strong>Şeflik:</strong> @ViewBag.SubDepartmentName</p>
+                            <p><strong>Müdürlük:</strong> @ViewBag.DepartmentName</p>
+                            <p><strong>Oluşturulma Tarihi:</strong> @project.CreatedAt?.ToString("dd/MM/yyyy")</p>
+                            <p><strong>Aktif mi:</strong> @(project.IsActive == true ? "Evet" : "Hayır")</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- Project Card 3 -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Proje 3</h5>
-                    <p class="card-text">Proje açıklaması burada yer alır.</p>
-                    <a href="#" class="btn btn-primary">Detayları Gör</a>
-                </div>
-            </div>
-        </div>
-        <!-- Project Card 4 -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Proje 4</h5>
-                    <p class="card-text">Proje açıklaması burada yer alır.</p>
-                    <a href="#" class="btn btn-primary">Detayları Gör</a>
-                </div>
-            </div>
-        </div>
-        <!-- Project Card 5 -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Proje 5</h5>
-                    <p class="card-text">Proje açıklaması burada yer alır.</p>
-                    <a href="#" class="btn btn-primary">Detayları Gör</a>
-                </div>
-            </div>
-        </div>
-        <!-- Project Card 6 -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Proje 6</h5>
-                    <p class="card-text">Proje açıklaması burada yer alır.</p>
-                    <a href="#" class="btn btn-primary">Detayları Gör</a>
-                </div>
-            </div>
-        </div>
+        }
     </div>
 </div>

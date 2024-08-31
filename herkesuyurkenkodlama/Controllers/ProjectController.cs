@@ -4,6 +4,7 @@ using herkesuyurkenkodlama.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace herkesuyurkenkodlama.Controllers
 {
@@ -19,12 +20,25 @@ namespace herkesuyurkenkodlama.Controllers
         }
         public IActionResult UserIndex()
         {
-            List<ProjectViewModel> projects =
-                _context.Projects.ToList()
-                    .Select(x => _mapper.Map<ProjectViewModel>(x)).ToList();
+            // Giriş yapmış kullanıcının UserId'sini alıyoruz
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            return View();
+            // Kullanıcının şeflik bilgilerini alıyoruz
+            var userSubDepartmentId = _context.Users
+                .Where(u => u.UserId == int.Parse(userId))
+                .Select(u => u.SubDepartmentId)
+                .FirstOrDefault();
+
+            // Kullanıcının bağlı olduğu şefliğe ait projeleri alıyoruz
+            List<ProjectViewModel> projects = _context.Projects
+                .Where(p => p.SubDepartmentId == userSubDepartmentId)
+                .ToList()
+                .Select(x => _mapper.Map<ProjectViewModel>(x))
+                .ToList();
+
+            return View(projects);
         }
+
 
         [Authorize(Roles = "Admin")]
         public IActionResult AdminIndex()
