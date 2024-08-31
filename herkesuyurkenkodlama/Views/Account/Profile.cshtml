@@ -34,7 +34,7 @@
                 }
                 <div class="text-center mt-3">
                     <button class="btn btn-secondary" type="submit">
-                        <i class="fa-solid fa-floppy-disk me-2"></i>Kaydet
+                        <i class="fa-solid fa-floppy-disk me-2 mr-1"></i>Kaydet
                     </button>
                 </div>
             </div>
@@ -58,7 +58,7 @@
 
                 <div class="input-group mb-3">
                     <input name="namesurname" type="text" class="form-control" placeholder="Ad Soyad" value="@ViewData["NameSurname"]">
-                    <button class="btn btn-secondary" type="submit"><i class="fa-solid fa-floppy-disk me-2"></i>Kaydet</button>
+                    <button class="btn btn-secondary" type="submit"><i class="fa-solid fa-floppy-disk me-2 mr-1"></i>Kaydet</button>
                 </div>
                 @if (ViewData["result"] != null && ViewData["result"] == "NameSurnameChanged")
                 {
@@ -77,7 +77,7 @@
                             <i class="fa fa-eye" id="togglePassword" style="cursor: pointer;"></i>
                         </span>
                     </div>
-                    <button class="btn btn-secondary ms-3" type="submit"><i class="fa-solid fa-floppy-disk me-2"></i>Kaydet</button>
+                    <button class="btn btn-secondary ms-3" type="submit"><i class="fa-solid fa-floppy-disk me-2 mr-1"></i>Kaydet</button>
                 </div>
                 @if (ViewData["result"] != null && ViewData["result"] == "PasswordChanged")
                 {

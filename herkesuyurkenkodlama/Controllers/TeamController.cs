@@ -52,8 +52,6 @@ namespace herkesuyurkenkodlama.Controllers
         }
 
 
-
-
         [Authorize(Roles = "Admin")]
         public IActionResult AdminIndex()
         {
