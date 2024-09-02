@@ -20,24 +20,51 @@ namespace herkesuyurkenkodlama.Controllers
         }
         public IActionResult UserIndex()
         {
-            // Giriş yapmış kullanıcının UserId'sini alıyoruz
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            // Kullanıcının şeflik bilgilerini alıyoruz
+            if (!int.TryParse(userIdClaim, out var userId))
+            {
+                return BadRequest("Geçersiz kullanıcı ID.");
+            }
+
             var userSubDepartmentId = _context.Users
-                .Where(u => u.UserId == int.Parse(userId))
+                .Where(u => u.UserId == userId)
                 .Select(u => u.SubDepartmentId)
                 .FirstOrDefault();
 
-            // Kullanıcının bağlı olduğu şefliğe ait projeleri alıyoruz
-            List<ProjectViewModel> projects = _context.Projects
-                .Where(p => p.SubDepartmentId == userSubDepartmentId)
+            var projects = _context.Projects
+                .Where(p => p.SubDepartmentId == userSubDepartmentId && p.IsActive == true)
                 .ToList()
                 .Select(x => _mapper.Map<ProjectViewModel>(x))
                 .ToList();
 
+            ViewBag.Users = _context.Users
+                .Select(u => new SelectListItem
+                {
+                    Value = u.UserId.ToString(),
+                    Text = u.Username
+                })
+                .ToList();
+
+            ViewBag.Departments = _context.Mdepartments
+                .Select(d => new SelectListItem
+                {
+                    Value = d.DepartmentId.ToString(),
+                    Text = d.DepartmanName
+                })
+                .ToList();
+
+            ViewBag.SubDepartments = _context.Sdepartments
+                .Select(sd => new SelectListItem
+                {
+                    Value = sd.SubDepartmentId.ToString(),
+                    Text = sd.SubDepartmentName
+                })
+                .ToList();
+
             return View(projects);
         }
+
 
 
         [Authorize(Roles = "Admin")]

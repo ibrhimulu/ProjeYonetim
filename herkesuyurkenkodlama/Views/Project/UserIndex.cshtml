@@ -2,22 +2,46 @@
 
 @{
     ViewData["Title"] = "Projeler";
+    var cardMinHeight = "200px"; // Kartların minimum yüksekliğini belirtiyoruz
 }
+
+<style>
+    .card-custom {
+        min-height: @cardMinHeight; /* Tüm kartların en az 200px yüksekliğinde olmasını sağlar */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-body {
+        flex-grow: 1; /* Kart gövdesinin kalan boşluğu kaplamasını sağlar */
+    }
+
+    .modal-footer {
+        padding: 0.5rem; /* Dış boşluğu küçült */
+    }
+
+        .modal-footer .btn {
+            padding: 0.25rem 0.5rem; /* Buton içindeki boşlukları küçült */
+            font-size: 0.875rem; /* Buton yazı boyutunu küçült */
+        }
+</style>
 
 <div class="container mt-4">
     <h1 class="mb-4 text-center display-4">@ViewData["Title"]</h1>
 
-    <div class="row justify-content-center">
+    <div class="row">
         @foreach (var project in Model)
         {
-            <div class="col-md-8 mb-4">
-                <div class="card">
+            <div class="col-md-4 mb-4">
+                <!-- 3 sütunlu düzen -->
+                <div class="card card-custom">
+                    <!-- Özel kart sınıfı ekleniyor -->
                     <div class="card-body">
                         <h5 class="card-title">@project.ProjectName</h5>
                         <p class="card-text">
                             @(string.IsNullOrEmpty(project.Description) ? "Proje açıklaması burada yer alır." : project.Description)
                         </p>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#projectDetailsModal-@project.ProjectId">
+                        <button class="btn btn-primary mt-auto" data-backdrop="false" data-toggle="modal" data-target="#projectDetailsModal-@project.ProjectId">
                             Detayları Gör
                         </button>
                     </div>
@@ -25,22 +49,36 @@
             </div>
 
             <!-- Modal -->
-            <div class="modal fade" id="projectDetailsModal-@project.ProjectId" tabindex="-1" aria-labelledby="projectDetailsModalLabel-@project.ProjectId" aria-hidden="true">
-                <div class="modal-dialog">
+            <div class="modal fade" id="projectDetailsModal-@project.ProjectId" tabindex="-1" 
+               aria-labelledby="projectDetailsModalLabel-@project.ProjectId" aria-hidden="true">
+                <div class="modal-dialog" style="margin-top: 80px;">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="projectDetailsModalLabel-@project.ProjectId">@project.ProjectName Detayları</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="modal-body">
-                            <p><strong>Kullanıcı Adı:</strong> @ViewBag.UserName</p>
-                            <p><strong>Şeflik:</strong> @ViewBag.SubDepartmentName</p>
-                            <p><strong>Müdürlük:</strong> @ViewBag.DepartmentName</p>
+                            <p>
+                                <strong>Kullanıcı Adı:</strong>
+                                @((ViewBag.Users as List<SelectListItem>)
+                                    ?.FirstOrDefault(u => u.Value == project.OwnerUserId.ToString())?.Text ?? "-")
+                            </p>
+                            <p>
+                                <strong>Şeflik:</strong>
+                                @((ViewBag.SubDepartments as List<SelectListItem>)
+                                    ?.FirstOrDefault(sd => sd.Value == project.SubDepartmentId.ToString())?.Text ?? "-")
+                            </p>
+                            <p>
+                                <strong>Müdürlük:</strong>
+                                @((ViewBag.Departments as List<SelectListItem>)
+                                    ?.FirstOrDefault(d => d.Value == project.DepartmentId.ToString())?.Text ?? "-")
+                            </p>
                             <p><strong>Oluşturulma Tarihi:</strong> @project.CreatedAt?.ToString("dd/MM/yyyy")</p>
-                            <p><strong>Aktif mi:</strong> @(project.IsActive == true ? "Evet" : "Hayır")</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
                         </div>
                     </div>
                 </div>
