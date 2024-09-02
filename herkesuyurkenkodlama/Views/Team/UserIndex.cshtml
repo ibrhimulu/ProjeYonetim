@@ -50,7 +50,8 @@
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                     <div class="card user-card border-0 shadow-sm featured-user-card">
                         <div class="card-body text-center">
-                            <img src="@Url.Content($"/uploads/{currentUser.ProfileImagePath}")" alt="Profile Image" class="rounded-circle profile-image mb-3">
+                            <img src="@Url.Content($"/uploads/{currentUser.ProfileImagePath}")" 
+                            class="rounded-circle profile-image mb-3">
                             <h5 class="card-title">@currentUser.Username</h5> <!-- Kullanıcı adı burada görüntülenecek -->
                             <p class="card-text text-muted">Siz</p>
                         </div>
