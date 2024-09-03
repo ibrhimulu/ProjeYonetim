@@ -56,18 +56,37 @@
         <nav class="sidebar bg-light">
             <h2 class="sidebar-title">Menü</h2>
             <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i> Ana Sayfa</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Project" asp-action="UserIndex"><i class="fa fa-folder"></i> Projeler</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Team" asp-action="UserIndex"><i class="fa fa-users"></i> Şeflikler</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Task" asp-action="UserIndex"><i class="fa fa-tasks"></i> Görevler</a>
-                </li>               
+                @if (!User.IsInRole("Manager"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i> Ana Sayfa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Project" asp-action="UserIndex"><i class="fa fa-folder"></i> Projeler</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Team" asp-action="UserIndex"><i class="fa fa-users"></i> Şeflikler</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Task" asp-action="UserIndex"><i class="fa fa-tasks"></i> Görevler</a>
+                    </li>
+                }
+
+                @if (User.IsInRole("Manager"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i> Ana Sayfa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Project" asp-action="ManagerIndex"><i class="fa fa-folder"></i> Projeler</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Team" asp-action="ManagerIndex"><i class="fa fa-users"></i> Şeflikler</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Task" asp-action="ManagerIndex"><i class="fa fa-tasks"></i> Görevler</a>
+                    </li>
+                }
 
 
                 @if (User.Identity.IsAuthenticated)
