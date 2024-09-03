@@ -75,7 +75,7 @@
                                 @((ViewBag.Departments as List<SelectListItem>)
                                     ?.FirstOrDefault(d => d.Value == project.DepartmentId.ToString())?.Text ?? "-")
                             </p>
-                            <p><strong>Oluşturulma Tarihi:</strong> @project.CreatedAt?.ToString("dd/MM/yyyy")</p>
+                           @*  <p><strong>Oluşturulma Tarihi:</strong> @project.CreatedAt?.ToString("dd/MM/yyyy")</p> *@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
