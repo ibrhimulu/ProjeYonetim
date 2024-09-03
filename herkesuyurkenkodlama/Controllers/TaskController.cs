@@ -31,7 +31,7 @@ namespace herkesuyurkenkodlama.Controllers
                 join assignedUser in _context.Users on task.AssignedUserId equals assignedUser.UserId
                 join department in _context.Mdepartments on task.DepartmentId equals department.DepartmentId
                 join subDepartment in _context.Sdepartments on task.SubDepartmentId equals subDepartment.SubDepartmentId
-                where task.AssignedUserId == Convert.ToInt32(userId) && task.IsActive
+                where task.AssignedUserId == Convert.ToInt32(userId) && task.IsActive ==true
                 select new TasklarViewModel
                 {
                     TaskId = task.TaskId,

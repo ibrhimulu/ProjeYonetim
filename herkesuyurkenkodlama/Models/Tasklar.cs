@@ -14,13 +14,14 @@ namespace herkesuyurkenkodlama.Models
         public int ProjectId { get; set; }
         public string Title { get; set; } = null!;
         public int AssignedUserId { get; set; }
-        public bool IsActive { get; set; }
+        public bool? IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
         public int? DepartmentId { get; set; }
         public int? SubDepartmentId { get; set; }
         public int StatusId { get; set; }
         public string? TaskDescription { get; set; }
         public string? TaskComment { get; set; }
+        public int? ProgressPercentage { get; set; }
 
         public virtual User AssignedUser { get; set; } = null!;
         public virtual Mdepartment? Department { get; set; }

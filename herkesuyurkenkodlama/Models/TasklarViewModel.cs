@@ -13,6 +13,7 @@
         public int StatusId { get; set; }
         public string? TaskDescription { get; set; }
         public string? TaskComment { get; set; }
+        public int? ProgressPercentage { get; set; }
     }
     public class CreateTasklarModel
     {
