@@ -38,7 +38,7 @@ namespace herkesuyurkenkodlama.Controllers
 
             // Şefliğe ait tüm kullanıcıları listele
             var usersInSubDepartment = _context.Users
-                .Where(u => u.SubDepartmentId == userSubDepartmentId)
+                .Where(u => u.SubDepartmentId == userSubDepartmentId && u.IsActive==true)
                 .Select(u => new UserViewModel
                 {
                     UserId = u.UserId,
@@ -57,8 +57,6 @@ namespace herkesuyurkenkodlama.Controllers
             var model = Tuple.Create(subDepartmentName, usersInSubDepartment);
             return View(model);
         }
-
-
 
 
         [Authorize(Roles = "Admin")]
