@@ -1,8 +1,11 @@
-﻿@model List<UserViewModel>
+﻿@model X.PagedList.IPagedList<UserViewModel>
+@using X.PagedList.Mvc.Core
+@using X.PagedList
 
 @{
     ViewData["Title"] = "Kullanıcılar";
 }
+
 
 <div class="container mt-4">
     <h1 class="mb-4">@ViewData["Title"]</h1>
@@ -27,7 +30,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (UserViewModel user in Model)
+                    @foreach (var user in Model)
                     {
                         <tr>
                             <td>@user.Username</td>
@@ -38,22 +41,22 @@
                                 {
                                     case 1:
                                         <span class="badge bg-secondary">User</span>
-                                        ; break;
+                                        break;
                                     case 2:
                                         <span class="badge bg-primary">Admin</span>
-                                        ; break;
+                                        break;
                                     case 3:
                                         <span class="badge bg-success">IT</span>
-                                        ; break;
+                                        break;
                                     case 4:
                                         <span class="badge bg-warning text-dark">Technic</span>
-                                        ; break;
+                                        break;
                                     case 11:
                                         <span class="badge bg-dark">Manager</span>
-                                        ; break;
+                                        break;
                                     default:
                                         <span class="badge bg-info">Tester</span>
-                                        ; break;
+                                        break;
                                 }
                             </td>
                             <td>
@@ -65,7 +68,7 @@
                                     .FirstOrDefault(sd => sd.Value == user.SubDepartmentId.ToString())?.Text ?? "-")
                             </td>
                             <td>
-                                @if (user.IsActive==true)
+                                @if (user.IsActive == true)
                                 {
                                     <span class="text-success"><i class="fa fa-check"></i> Aktif</span>
                                 }
@@ -84,4 +87,35 @@
             </table>
         </div>
     </div>
+
+   <!-- Sayfalama -->
+<div class="d-flex justify-content-center mt-3">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @if (Model.HasPreviousPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            }
+            @for (int i = 1; i <= Model.PageCount; i++)
+            {
+                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                </li>
+            }
+            @if (Model.HasNextPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
 </div>

@@ -5,6 +5,9 @@ using herkesuyurkenkodlama.Models;
 using NETCore.Encrypt.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
+using X.PagedList;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace ProjeYonetim.Controllers
 {
@@ -21,35 +24,44 @@ namespace ProjeYonetim.Controllers
             _configuration = configuration;
         }
 
-        [Authorize(Roles = "Admin")]
-        public IActionResult Index()
-        {
-            List<UserViewModel> users =
-                _context.Users.ToList()
-                    .Select(x => _mapper.Map<UserViewModel>(x)).ToList();
-            
-            // Müdürlükleri ViewBag'e ekleyin
-            ViewBag.Departments = _context.Mdepartments
-                .Select(d => new SelectListItem
-                {
-                    Value = d.DepartmentId.ToString(),
-                    Text = d.DepartmanName
-                })
+
+[Authorize(Roles = "Admin")]
+    public IActionResult Index(int? page)
+    {
+        int pageSize = 12; // Sayfa başına gösterilecek kayıt sayısı
+        int pageNumber = (page ?? 1);
+
+        // Kullanıcıları veritabanından al ve ViewModel'e dönüştür
+        List<UserViewModel> users =
+            _context.Users
+                .Select(x => _mapper.Map<UserViewModel>(x))
                 .ToList();
 
-            // Şeflikleri ViewBag'e ekleyin
-            ViewBag.SubDepartments = _context.Sdepartments
-                .Select(sd => new SelectListItem
-                {
-                    Value = sd.SubDepartmentId.ToString(),
-                    Text = sd.SubDepartmentName
-                })
-                .ToList();
+        // Müdürlükleri ViewBag'e ekleyin
+        ViewBag.Departments = _context.Mdepartments
+            .Select(d => new SelectListItem
+            {
+                Value = d.DepartmentId.ToString(),
+                Text = d.DepartmanName
+            })
+            .ToList();
 
-            return View(users);
-        }
+        // Şeflikleri ViewBag'e ekleyin
+        ViewBag.SubDepartments = _context.Sdepartments
+            .Select(sd => new SelectListItem
+            {
+                Value = sd.SubDepartmentId.ToString(),
+                Text = sd.SubDepartmentName
+            })
+            .ToList();
 
-        [Authorize(Roles = "Admin")]
+        // Kullanıcı listesini sayfalara böl ve View'a gönder
+        return View(users.ToPagedList(pageNumber, pageSize));
+    }
+
+
+
+    [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             // Departman ve Alt Departmanları çekip ViewBag'e yükle
