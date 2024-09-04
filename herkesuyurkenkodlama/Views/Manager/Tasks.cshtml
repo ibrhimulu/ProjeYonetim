@@ -1,5 +1,86 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<TasklarViewModel>
+
 @{
+    ViewData["Title"] = "Görevler";
 }
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-16">
+            <h1 class="mb-4 text-center display-4">@ViewData["Title"]</h1>
+
+            <div class="card shadow-lg">
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col" style="background-color: #343a40; color: #fff;">Görev Adı</th>
+                                <th scope="col" style="background-color: #343a40; color: #fff;">Açıklama</th>
+                                <th scope="col" style="background-color: #343a40; color: #fff;">Proje</th>
+                                <th scope="col" style="background-color: #343a40; color: #fff;">Kullanıcı</th>
+                                <th scope="col" style="background-color: #343a40; color: #fff;">Yorum</th>
+                                <th scope="col" style="background-color: #343a40; color: #fff;">Oluş. Tarihi</th>
+                                <th scope="col" style="background-color: #343a40; color: #fff;">Durum</th>
+                                <th scope="col" style="background-color: #343a40; color: #fff;"></th>
+                               
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var tasklar in Model)
+                            {
+                                <tr class="align-middle">
+                                    <td class="fw-bold">@tasklar.Title</td>
+                                    <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                        <span title="@tasklar.TaskDescription">
+                                            @(string.IsNullOrEmpty(tasklar.TaskDescription) ? "-" : tasklar.TaskDescription)
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @((ViewBag.Projects as List<SelectListItem>)
+                                            .FirstOrDefault(p => p.Value == tasklar.ProjectId.ToString())?.Text ?? "-")
+                                    </td>
+                                    <td>
+                                        @((ViewBag.Users as List<SelectListItem>)
+                                            .FirstOrDefault(u => u.Value == tasklar.AssignedUserId.ToString())?.Text ?? "-"
+                                            )
+                                    </td>
+                                    <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                        <span title="@tasklar.TaskComment">@(string.IsNullOrEmpty(tasklar.TaskComment) ? "-" : tasklar.TaskComment)</span>
+                                    </td>
+                                    <td>@tasklar.CreatedAt.ToString("dd/MM/yyyy")</td>
+                                    <td>
+                                        @if (tasklar.StatusId == 1)
+                                        {
+                                            <span class="badge bg-danger text-dark fs-6">Bekliyor</span>
+                                        }
+                                        else if (tasklar.StatusId == 2)
+                                        {
+                                            <span class="badge bg-primary fs-6">Devam Ediyor</span>
+                                        }
+                                        else if (tasklar.StatusId == 3)
+                                        {
+                                            <span class="badge bg-success fs-6">Tamamlandı</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary fs-6">Bilinmiyor</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <form method="post" action="/Manager/AddComment">
+                                            <input type="hidden" name="taskId" value="@tasklar.TaskId" />
+                                            <input type="text" name="newComment" placeholder="Yorum yaz..." class="form-control form-control-sm" />
+                                            <button type="submit" class="btn btn-sm btn-primary mt-1">Ekle</button>
+                                        </form>
+
+                                    </td>
+                                   
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
