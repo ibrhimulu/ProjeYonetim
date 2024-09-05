@@ -18,9 +18,10 @@
                                 <th scope="col" style="background-color: #343a40; color: #fff;">Açıklama</th>
                                 <th scope="col" style="background-color: #343a40; color: #fff;">Proje</th>
                                 <th scope="col" style="background-color: #343a40; color: #fff;">Kullanıcı</th>
+                                <th scope="col" style="background-color: #343a40; color: #fff;">Şeflik</th>
                                 <th scope="col" style="background-color: #343a40; color: #fff;">Yorum</th>
                                 <th scope="col" style="background-color: #343a40; color: #fff;">Oluş. Tarihi</th>
-                                <th scope="col" style="background-color: #343a40; color: #fff;">Durum</th>
+                                <th scope="col" style="background-color: #343a40; color: #fff;">Durum</th>                               
                                 <th scope="col" style="background-color: #343a40; color: #fff;"></th>
                                
                             </tr>
@@ -30,7 +31,7 @@
                             {
                                 <tr class="align-middle">
                                     <td class="fw-bold">@tasklar.Title</td>
-                                    <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                         <span title="@tasklar.TaskDescription">
                                             @(string.IsNullOrEmpty(tasklar.TaskDescription) ? "-" : tasklar.TaskDescription)
                                         </span>
@@ -42,6 +43,11 @@
                                     <td>
                                         @((ViewBag.Users as List<SelectListItem>)
                                             .FirstOrDefault(u => u.Value == tasklar.AssignedUserId.ToString())?.Text ?? "-"
+                                            )
+                                    </td>
+                                    <td>
+                                        @((ViewBag.SubDepartments as List<SelectListItem>)
+                                            .FirstOrDefault(u => u.Value == tasklar.SubDepartmentId.ToString())?.Text ?? "-"
                                             )
                                     </td>
                                     <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
