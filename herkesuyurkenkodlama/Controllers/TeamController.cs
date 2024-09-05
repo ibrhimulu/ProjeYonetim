@@ -38,12 +38,13 @@ namespace herkesuyurkenkodlama.Controllers
 
             // Şefliğe ait tüm kullanıcıları listele
             var usersInSubDepartment = _context.Users
-                .Where(u => u.SubDepartmentId == userSubDepartmentId && u.IsActive==true)
+                .Where(u => u.SubDepartmentId == userSubDepartmentId && u.IsActive == true)
                 .Select(u => new UserViewModel
                 {
                     UserId = u.UserId,
                     Username = u.Username,
                     ProfileImagePath = Path.GetFileName(u.ProfileImagePath), // Dosya adını sadece almak için
+                    RoleId = u.RoleId // Role ID'sini çekiyoruz
                 })
                 .ToList();
 
@@ -56,6 +57,7 @@ namespace herkesuyurkenkodlama.Controllers
             // View'a Şeflik adı ve kullanıcılar listesini gönder
             var model = Tuple.Create(subDepartmentName, usersInSubDepartment);
             return View(model);
+
         }
 
 

@@ -162,7 +162,41 @@ namespace herkesuyurkenkodlama.Controllers
 
         public IActionResult Teams()
         {
-            return View();
+            // Giriş yapmış kullanıcının ID'sini al
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId) || !int.TryParse(userId, out var userIdInt))
+            {
+                // ID dönüşüm hatası
+                return BadRequest("Geçersiz kullanıcı ID'si.");
+            }
+
+            // Giriş yapmış kullanıcının bağlı olduğu şefliğin ID'sini al
+            var userSubDepartmentId = _context.Users
+                .Where(u => u.UserId == userIdInt)
+                .Select(u => u.SubDepartmentId)
+                .FirstOrDefault();
+
+            // Şefliğe ait tüm kullanıcıları listele
+            var usersInSubDepartment = _context.Users
+                .Where(u => u.SubDepartmentId == userSubDepartmentId && u.IsActive == true)
+                .Select(u => new UserViewModel
+                {
+                    UserId = u.UserId,
+                    Username = u.Username,
+                    ProfileImagePath = Path.GetFileName(u.ProfileImagePath), // Dosya adını sadece almak için
+                })
+                .ToList();
+
+            // Şeflik adını al
+            var subDepartmentName = _context.Sdepartments
+                .Where(sd => sd.SubDepartmentId == userSubDepartmentId)
+                .Select(sd => sd.SubDepartmentName)
+                .FirstOrDefault();
+
+            // View'a Şeflik adı ve kullanıcılar listesini gönder
+            var model = Tuple.Create(subDepartmentName, usersInSubDepartment);
+            return View(model);
         }
 
         [HttpPost]
