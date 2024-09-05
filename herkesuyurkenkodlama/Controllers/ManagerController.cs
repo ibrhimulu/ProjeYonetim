@@ -185,6 +185,7 @@ namespace herkesuyurkenkodlama.Controllers
                     UserId = u.UserId,
                     Username = u.Username,
                     ProfileImagePath = Path.GetFileName(u.ProfileImagePath), // Dosya adını sadece almak için
+                    RoleId = u.RoleId // Role ID'sini çekiyoruz
                 })
                 .ToList();
 
@@ -193,6 +194,15 @@ namespace herkesuyurkenkodlama.Controllers
                 .Where(sd => sd.SubDepartmentId == userSubDepartmentId)
                 .Select(sd => sd.SubDepartmentName)
                 .FirstOrDefault();
+
+            // Rolleri ViewBag'e ekleyin
+            ViewBag.Roles = _context.Roles
+                .Select(r => new SelectListItem
+                {
+                    Value = r.RoleId.ToString(),
+                    Text = r.Rolename
+                })
+                .ToList();
 
             // View'a Şeflik adı ve kullanıcılar listesini gönder
             var model = Tuple.Create(subDepartmentName, usersInSubDepartment);

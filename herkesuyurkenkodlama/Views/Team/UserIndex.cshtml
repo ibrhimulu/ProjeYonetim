@@ -66,7 +66,18 @@
                             <img src="@Url.Content($"/uploads/{currentUser.ProfileImagePath}")" 
                             class="rounded-circle profile-image mb-3">
                             <h5 class="card-title">@currentUser.Username</h5> <!-- Kullanıcı adı burada görüntülenecek -->
-                            <p class="card-text text-muted role-text">Role ID: @currentUser.RoleId</p>
+                            @if (ViewBag.Roles != null && ViewBag.Roles is List<SelectListItem>)
+                            {
+                                <p class="card-text text-muted role-text">
+                                    @((ViewBag.Roles as List<SelectListItem>)
+                                        .FirstOrDefault(r => r.Value == currentUser.RoleId.ToString())?.Text ?? "-")
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="card-text text-muted role-text">Rol bilgisi bulunamadı</p>
+                            }
+
                             <p class="card-text text-muted user-text">Siz</p>
 
                         </div>
@@ -82,7 +93,17 @@
                         <div class="card-body text-center">
                             <img src="@Url.Content($"/uploads/{user.ProfileImagePath}")" alt="Profile Image" class="rounded-circle profile-image mb-3">
                             <h5 class="card-title">@user.Username</h5> <!-- Kullanıcı adı burada görüntülenecek -->
-                            <p class="card-text role-text">Role ID: @user.RoleId</p>
+                            @if (ViewBag.Roles != null && ViewBag.Roles is List<SelectListItem>)
+                            {
+                                <p class="card-text text-muted role-text">
+                                    @((ViewBag.Roles as List<SelectListItem>)
+                                        .FirstOrDefault(r => r.Value == user.RoleId.ToString())?.Text ?? "-")
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="card-text text-muted role-text">Rol bilgisi bulunamadı</p>
+                            }
                         </div>
                     </div>
                 </div>

@@ -54,11 +54,20 @@ namespace herkesuyurkenkodlama.Controllers
                 .Select(sd => sd.SubDepartmentName)
                 .FirstOrDefault();
 
+            // Rolleri ViewBag'e ekleyin
+            ViewBag.Roles = _context.Roles
+                .Select(r => new SelectListItem
+                {
+                    Value = r.RoleId.ToString(), 
+                    Text = r.Rolename 
+                })
+                .ToList();
+
             // View'a Şeflik adı ve kullanıcılar listesini gönder
             var model = Tuple.Create(subDepartmentName, usersInSubDepartment);
             return View(model);
-
         }
+
 
 
         [Authorize(Roles = "Admin")]
