@@ -70,16 +70,13 @@ namespace herkesuyurkenkodlama.Controllers
 
         public IActionResult Tasks()
         {
-            // Giriş yapmış kullanıcının ID'sini al
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            // Kullanıcının müdürlüğünü al
             var userDepartmentId = _context.Users
                 .Where(u => u.UserId == Convert.ToInt32(userId))
                 .Select(u => u.DepartmentId)
                 .FirstOrDefault();
 
-            // Kullanıcının müdürlüğüne ait görevleri sorgula
             var tasksForUserDepartment =
                 from task in _context.Tasklars
                 join project in _context.Projects on task.ProjectId equals project.ProjectId
@@ -99,13 +96,11 @@ namespace herkesuyurkenkodlama.Controllers
                     CreatedAt = task.CreatedAt,
                     TaskComment = task.TaskComment,
                     TaskDescription = task.TaskDescription,
-                    AssignedUserId = task.AssignedUserId, // Bu satırı ekleyin
-                                                          // Diğer gerekli alanlar
+                    AssignedUserId = task.AssignedUserId, 
                 };
 
             var userTasks = tasksForUserDepartment.ToList();
-
-            // Eğer kullanıcının görevleri yoksa, boş bir liste gönder
+                       
             if (userTasks == null || !userTasks.Any())
             {
                 userTasks = new List<TasklarViewModel>();
