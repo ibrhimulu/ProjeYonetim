@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Security.Claims;
 
 namespace herkesuyurkenkodlama.Controllers
@@ -166,15 +167,33 @@ namespace herkesuyurkenkodlama.Controllers
                 return BadRequest("Geçersiz kullanıcı ID'si.");
             }
 
-            // Giriş yapmış kullanıcının bağlı olduğu şefliğin ID'sini al
-            var userSubDepartmentId = _context.Users
+            // Giriş yapmış kullanıcının bağlı olduğu müdürlüğün ID'sini al
+            var userDepartmentId = _context.Users
                 .Where(u => u.UserId == userIdInt)
-                .Select(u => u.SubDepartmentId)
+                .Select(u => u.DepartmentId)
                 .FirstOrDefault();
 
-            // Şefliğe ait tüm kullanıcıları listele
-            var usersInSubDepartment = _context.Users
-                .Where(u => u.SubDepartmentId == userSubDepartmentId && u.IsActive == true)
+            if (userDepartmentId == null)
+            {
+                // Müdürlük ID'si bulunamadıysa hata döndür
+                return NotFound("Kullanıcıya ait müdürlük bulunamadı.");
+            }
+
+            // Bu müdürlüğe bağlı tüm şefliklerin ID'lerini al (nullable int tipinde alıyoruz)
+            var subDepartmentIds = _context.Sdepartments
+                .Where(sd => sd.DepartmentId == userDepartmentId)
+                .Select(sd => (int?)sd.SubDepartmentId) // nullable hale getiriyoruz
+                .ToList();
+
+            if (!subDepartmentIds.Any())
+            {
+                // Eğer şeflik ID'leri bulunamazsa hata döndür
+                return NotFound("Müdürlüğe bağlı şeflikler bulunamadı.");
+            }
+
+            // Tüm ilgili şefliklere ait kullanıcıları listele (SubDepartmentId nullable olduğu için null kontrolü yapıyoruz)
+            var usersInSubDepartments = _context.Users
+                .Where(u => u.SubDepartmentId != null && subDepartmentIds.Contains(u.SubDepartmentId) && u.IsActive == true)
                 .Select(u => new UserViewModel
                 {
                     UserId = u.UserId,
@@ -184,11 +203,22 @@ namespace herkesuyurkenkodlama.Controllers
                 })
                 .ToList();
 
-            // Şeflik adını al
-            var subDepartmentName = _context.Sdepartments
-                .Where(sd => sd.SubDepartmentId == userSubDepartmentId)
-                .Select(sd => sd.SubDepartmentName)
+            if (!usersInSubDepartments.Any())
+            {
+                // Eğer kullanıcı bulunamazsa
+                return NotFound("Şefliklere ait aktif kullanıcı bulunamadı.");
+            }
+
+            // Müdürlük adını al
+            var departmentName = _context.Mdepartments
+                .Where(d => d.DepartmentId == userDepartmentId)
+                .Select(d => d.DepartmanName)
                 .FirstOrDefault();
+
+            if (string.IsNullOrEmpty(departmentName))
+            {
+                return NotFound("Müdürlük adı bulunamadı.");
+            }
 
             // Rolleri ViewBag'e ekleyin
             ViewBag.Roles = _context.Roles
@@ -199,10 +229,11 @@ namespace herkesuyurkenkodlama.Controllers
                 })
                 .ToList();
 
-            // View'a Şeflik adı ve kullanıcılar listesini gönder
-            var model = Tuple.Create(subDepartmentName, usersInSubDepartment);
+            // View'a müdürlük adı ve kullanıcılar listesini gönder
+            var model = Tuple.Create(departmentName, usersInSubDepartments);
             return View(model);
         }
+
 
         [HttpPost]
         public IActionResult AddComment(int taskId, string newComment)
